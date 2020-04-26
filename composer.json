@@ -1,0 +1,40 @@
+{
+    "name": "jkniest/hue-it",
+    "description": "PHP wrapper for the phillips hue api",
+    "type": "library",
+    "require": {
+        "symfony/http-client": "^5.0",
+        "tightenco/collect": "^7.6"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^6.1",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.19"
+    },
+    "prefer-stable": true,
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordan Kniest",
+            "email": "mail@jkniest.de"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "jkniest\\HueIt\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jkniest\\HueIt\\Specs\\": "specs/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "php-cs-fixer fix --config=.php_cs --allow-risky=yes src/ spec/",
+            "phpspec run",
+            "phpstan analyse src --level=max"
+        ]
+    }
+}

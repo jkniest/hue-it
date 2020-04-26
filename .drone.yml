@@ -1,0 +1,61 @@
+---
+kind: "pipeline"
+type: "docker"
+name: "default"
+
+steps:
+  - name: "restore_cache"
+    image: "drillster/drone-volume-cache"
+    settings:
+      restore: true
+      mount:
+        - "./vendor"
+        - "./node_modules"
+    volumes:
+      - name: "cache"
+        path: "/cache"
+
+  - name: "prepare_php"
+    image: "jkniest/docker-testing-php:1"
+    commands:
+      - "composer install"
+    depends_on:
+      - "restore_cache"
+
+  - name: "rebuild_cache"
+    image: "drillster/drone-volume-cache"
+    settings:
+      rebuild: true
+      mount:
+        - "./vendor"
+    volumes:
+      - name: "cache"
+        path: "/cache"
+    depends_on:
+      - "prepare_php"
+
+  - name: "test_phpspec"
+    image: "jkniest/docker-testing-php:1"
+    commands:
+      - "./vendor/bin/phpspec run"
+    depends_on:
+      - "rebuild_cache"
+
+  - name: "test_phpcsfixer"
+    image: "jkniest/docker-testing-php:1"
+    commands:
+      - "./vendor/bin/php-cs-fixer fix --config=.php_cs --allow-risky=yes --dry-run src/ spec/"
+    depends_on:
+      - "rebuild_cache"
+
+  - name: "test_phpstan"
+    image: "jkniest/docker-testing-php:1"
+    commands:
+      - "./vendor/bin/phpstan analyse src --level=max"
+    depends_on:
+      - "rebuild_cache"
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/drone/cache
