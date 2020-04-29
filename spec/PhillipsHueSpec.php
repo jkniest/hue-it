@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt;
 
+use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\PhillipsHue;
+use jkniest\HueIt\DemoConstants;
+use Illuminate\Support\Collection;
 use jkniest\HueIt\PhillipsHueClient;
 use jkniest\HueIt\PhillipsHueConfig;
 
@@ -64,12 +67,44 @@ class PhillipsHueSpec extends ObjectBehavior
     {
         $client->userRequest('GET', 'config')
             ->shouldBeCalledOnce()
-            ->willReturn(PhillipsHueConfigSpec::RAW_DATA);
+            ->willReturn(DemoConstants::CONFIG_DATA);
 
         $this->useClient($client);
 
         $config = $this->getConfig();
         $config->shouldBeAnInstanceOf(PhillipsHueConfig::class);
         $config->getName()->shouldBe('Bridge name');
+    }
+
+    public function it_can_return_a_specific_light(PhillipsHueClient $client): void
+    {
+        $client->userRequest('GET', 'lights/123')
+            ->shouldBeCalledOnce()
+            ->willReturn(DemoConstants::LIGHT_DATA);
+
+        $this->useClient($client);
+
+        $light = $this->getLight(123);
+        $light->shouldBeAnInstanceOf(Light::class);
+        $light->getName()->shouldBe('Example light 1');
+    }
+
+    public function it_can_return_all_lights(PhillipsHueClient $client): void
+    {
+        $client->userRequest('GET', 'lights')
+            ->shouldBeCalledOnce()
+            ->willReturn([
+                '8'  => DemoConstants::LIGHT_DATA,
+                '17' => DemoConstants::LIGHT_DATA,
+            ]);
+
+        $this->useClient($client);
+
+        $lights = $this->getAllLights();
+        $lights->shouldBeAnInstanceOf(Collection::class);
+        $lights->shouldHaveCount(2);
+
+        $lights[8]->shouldBeAnInstanceOf(Light::class);
+        $lights[17]->shouldBeAnInstanceOf(Light::class);
     }
 }

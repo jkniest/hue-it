@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt;
 
+use Illuminate\Support\Collection;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
 
 class PhillipsHue
@@ -55,5 +56,20 @@ class PhillipsHue
         $result = $this->client->userRequest('GET', 'config');
 
         return new PhillipsHueConfig($result);
+    }
+
+    public function getLight(int $id): Light
+    {
+        $result = $this->client->userRequest('GET', "lights/{$id}");
+
+        return new Light($result);
+    }
+
+    public function getAllLights(): Collection
+    {
+        $result = $this->client->userRequest('GET', 'lights');
+
+        return collect($result)
+            ->map(static fn (array $data) => new Light($data));
     }
 }

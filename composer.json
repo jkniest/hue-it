@@ -29,7 +29,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "jkniest\\HueIt\\Specs\\": "specs/"
+            "spec\\jkniest\\HueIt\\": "spec/"
         }
     },
     "scripts": {
