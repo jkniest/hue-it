@@ -68,4 +68,10 @@ class LightSpec extends ObjectBehavior
 
         $this->turnOff();
     }
+
+    public function it_can_return_the_brightness_in_percentage_and_raw_value(): void
+    {
+        $this->getBrightness()->shouldBe(61);
+        $this->getBrightness(true)->shouldBe(156);
+    }
 }

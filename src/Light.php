@@ -12,6 +12,8 @@ class Light
 
     private int $id;
 
+    private int $brightness;
+
     private PhillipsHueClient $client;
 
     public function __construct(int $id, array $rawData, PhillipsHueClient $client)
@@ -19,6 +21,7 @@ class Light
         $this->id = $id;
         $this->name = $rawData['name'];
         $this->on = $rawData['state']['on'];
+        $this->brightness = $rawData['state']['bri'];
 
         $this->client = $client;
     }
@@ -57,5 +60,14 @@ class Light
     public function turnOff(): void
     {
         $this->setOn(false);
+    }
+
+    public function getBrightness(bool $raw = false): int
+    {
+        if ($raw) {
+            return $this->brightness;
+        }
+
+        return (int) (100 / 254 * $this->brightness);
     }
 }
