@@ -86,6 +86,7 @@ class PhillipsHueSpec extends ObjectBehavior
 
         $light = $this->getLight(123);
         $light->shouldBeAnInstanceOf(Light::class);
+        $light->getId()->shouldBe(123);
         $light->getName()->shouldBe('Example light 1');
     }
 
@@ -105,6 +106,9 @@ class PhillipsHueSpec extends ObjectBehavior
         $lights->shouldHaveCount(2);
 
         $lights[8]->shouldBeAnInstanceOf(Light::class);
+        $lights[8]->getId()->shouldBe(8);
+
         $lights[17]->shouldBeAnInstanceOf(Light::class);
+        $lights[17]->getId()->shouldBe(17);
     }
 }

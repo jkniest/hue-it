@@ -62,7 +62,7 @@ class PhillipsHue
     {
         $result = $this->client->userRequest('GET', "lights/{$id}");
 
-        return new Light($result);
+        return new Light($id, $result, $this->client);
     }
 
     public function getAllLights(): Collection
@@ -70,6 +70,6 @@ class PhillipsHue
         $result = $this->client->userRequest('GET', 'lights');
 
         return collect($result)
-            ->map(static fn (array $data) => new Light($data));
+            ->map(fn (array $data, int $id) => new Light($id, $data, $this->client));
     }
 }
