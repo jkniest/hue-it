@@ -1,6 +1,6 @@
 # PHP wrapper for the Phillips Hue API
 
-{{drone}}
+[![Build Status](https://drone.jkniest.de/api/badges/jkniest/hue-it/status.svg?ref=refs/heads/master)](https://drone.jkniest.de/jkniest/hue-it)
 
 ## Installation
 
