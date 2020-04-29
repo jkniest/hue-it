@@ -4,46 +4,33 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt;
 
-use Symfony\Component\HttpClient\HttpClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 
 class PhillipsHue
 {
-    private string $ip;
-
-    private ?string $username;
-
-    private HttpClientInterface $client;
+    private PhillipsHueClient $client;
 
     public function __construct(string $ip, ?string $username = null)
     {
-        $this->ip = $ip;
-        $this->username = $username;
-        $this->client = HttpClient::createForBaseUri('http://'.$this->ip);
+        $this->client = new PhillipsHueClient($ip, $username);
     }
 
     public function getIp(): string
     {
-        return $this->ip;
+        return $this->client->getIp();
     }
 
     public function getUsername(): ?string
     {
-        return $this->username;
+        return $this->client->getUsername();
     }
 
-    public function getClient(): HttpClientInterface
+    public function getClient(): PhillipsHueClient
     {
         return $this->client;
     }
 
-    public function useClient(HttpClientInterface $client): self
+    public function useClient(PhillipsHueClient $client): self
     {
         $this->client = $client;
 
@@ -55,25 +42,18 @@ class PhillipsHue
      */
     public function authenticate(string $deviceType): string
     {
-        try {
-            $result = $this->client->request('POST', '/api', [
-                'json' => ['devicetype' => $deviceType],
-            ])->toArray();
-        } catch (ClientExceptionInterface |
-        DecodingExceptionInterface |
-        RedirectionExceptionInterface |
-        ServerExceptionInterface |
-        TransportExceptionInterface $e) {
-            throw new PhillipsHueException($e->getMessage(), $e->getCode(), $e);
-        }
-
-        if (isset($result[0]['error'])) {
-            throw new PhillipsHueException($result[0]['error']['description'], $result[0]['error']['type']);
-        }
+        $result = $this->client->request('POST', '', ['devicetype' => $deviceType]);
 
         $username = $result[0]['success']['username'];
-        $this->username = $username;
+        $this->client->setUsername($username);
 
         return $username;
+    }
+
+    public function getConfig(): PhillipsHueConfig
+    {
+        $result = $this->client->userRequest('GET', 'config');
+
+        return new PhillipsHueConfig($result);
     }
 }

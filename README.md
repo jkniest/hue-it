@@ -37,6 +37,17 @@ $hue = new PhillipsHue('192.168.xxx.xx');
 $username = $hue->authenticate('Unique device name');
 ```
 
+The hue instance has a few methods to get information about the configuration and bridge:
+```php
+$hue->getIp();
+$hue->getUsername();
+
+$config = $hue->getConfig();
+$config->getName();
+$config->getZigBeeChannel();
+// and many more…
+```
+
 ### Via Phillips Hue Cloud
 - TODO
 
