@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt;
 
+use jkniest\HueIt\Helper\ColorConverter;
+
 class Light
 {
     private string $name;
@@ -26,6 +28,13 @@ class Light
 
     private string $alert;
 
+    private bool $reachable;
+
+    private string $colorMode;
+
+    private float $colorX;
+    private float $colorY;
+
     private PhillipsHueClient $client;
 
     public function __construct(int $id, array $rawData, PhillipsHueClient $client)
@@ -40,6 +49,10 @@ class Light
         $this->saturation = $rawData['state']['sat'];
         $this->effect = $rawData['state']['effect'];
         $this->alert = $rawData['state']['alert'];
+        $this->reachable = $rawData['state']['reachable'];
+        $this->colorMode = $rawData['state']['colormode'];
+        $this->colorX = $rawData['state']['xy'][0];
+        $this->colorY = $rawData['state']['xy'][1];
 
         $this->client = $client;
     }
@@ -118,5 +131,38 @@ class Light
     public function getAlert(): string
     {
         return $this->alert;
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->reachable;
+    }
+
+    public function getColorMode(): string
+    {
+        return $this->colorMode;
+    }
+
+    public function getColorAsXY(): array
+    {
+        return [$this->colorX, $this->colorY];
+    }
+
+    public function getColorAsRGB(): array
+    {
+        return ColorConverter::fromXYToRGB(
+            $this->colorX,
+            $this->colorY,
+            $this->getBrightness()
+        );
+    }
+
+    public function getColorAsHex(): string
+    {
+        return ColorConverter::fromXYToHex(
+            $this->colorX,
+            $this->colorY,
+            $this->getBrightness()
+        );
     }
 }

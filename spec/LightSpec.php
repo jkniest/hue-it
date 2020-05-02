@@ -96,4 +96,29 @@ class LightSpec extends ObjectBehavior
     {
         $this->getAlert()->shouldBe('lselect');
     }
+
+    public function it_can_return_if_its_reachable(): void
+    {
+        $this->isReachable()->shouldBe(false);
+    }
+
+    public function it_can_return_the_colormode(): void
+    {
+        $this->getColorMode()->shouldBe('xy');
+    }
+
+    public function it_can_return_the_color_in_xy(): void
+    {
+        $this->getColorAsXY()->shouldBe([0.1234, 0.5678]);
+    }
+
+    public function it_can_return_the_xy_color_as_rgb(): void
+    {
+        $this->getColorAsRGB()->shouldBe([0, 247, 141]);
+    }
+
+    public function it_can_return_the_xy_color_as_hex(): void
+    {
+        $this->getColorAsHex()->shouldBe('#00f78d');
+    }
 }
