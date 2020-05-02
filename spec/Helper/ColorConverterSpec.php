@@ -27,4 +27,11 @@ class ColorConverterSpec extends ObjectBehavior
     {
         $this::fromXYToHex(0.1234, 0.5678, 61)->shouldBe('#00f78d');
     }
+
+    public function it_can_convert_rgb_colors_to_xy(): void
+    {
+        $result = $this::fromRGBToXY(0, 100, 200);
+        $result[0]->shouldBeApproximately(0.151, 3);
+        $result[1]->shouldBeApproximately(0.128, 3);
+    }
 }

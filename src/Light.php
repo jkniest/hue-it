@@ -107,11 +107,14 @@ class Light
     {
         if ($raw) {
             $this->client->lightRequest($this, ['bri' => $value]);
+            $this->brightness = $value;
 
             return $this;
         }
 
-        $this->client->lightRequest($this, ['bri' => (int) (254 / 100 * $value)]);
+        $absolute = (int) ceil(254 / 100 * $value);
+        $this->client->lightRequest($this, ['bri' => $absolute]);
+        $this->brightness = $absolute;
 
         return $this;
     }
@@ -128,6 +131,26 @@ class Light
         );
     }
 
+    public function setColorTemperature(int $value, bool $raw = false): self
+    {
+        if ($raw) {
+            $this->client->lightRequest($this, ['ct' => $value]);
+            $this->colorTemperature = $value;
+
+            return $this;
+        }
+
+        $absolute = (int) (
+            $value * ($this->maxColorTemperature - $this->minColorTemperature)
+            / 100 + $this->minColorTemperature
+        );
+
+        $this->client->lightRequest($this, ['ct' => $absolute]);
+        $this->colorTemperature = $absolute;
+
+        return $this;
+    }
+
     public function getSaturation(bool $raw = false): int
     {
         if ($raw) {
@@ -135,6 +158,22 @@ class Light
         }
 
         return (int) (100 / 254 * $this->saturation);
+    }
+
+    public function setSaturation(int $value, bool $raw = false): self
+    {
+        if ($raw) {
+            $this->client->lightRequest($this, ['sat' => $value]);
+            $this->saturation = $value;
+
+            return $this;
+        }
+
+        $absolute = (int) ceil(254 / 100 * $value);
+        $this->client->lightRequest($this, ['sat' => $absolute]);
+        $this->saturation = $absolute;
+
+        return $this;
     }
 
     public function getEffect(): string
@@ -162,6 +201,16 @@ class Light
         return [$this->colorX, $this->colorY];
     }
 
+    public function setColorAsXY(float $x, float $y): self
+    {
+        $this->client->lightRequest($this, ['xy' => [$x, $y]]);
+
+        $this->colorX = $x;
+        $this->colorY = $y;
+
+        return $this;
+    }
+
     public function getColorAsRGB(): array
     {
         return ColorConverter::fromXYToRGB(
@@ -171,6 +220,18 @@ class Light
         );
     }
 
+    public function setColorAsRGB(int $red, int $green, int $blue): self
+    {
+        $xy = ColorConverter::fromRGBToXY($red, $green, $blue);
+
+        $this->client->lightRequest($this, ['xy' => $xy]);
+
+        $this->colorX = $xy[0];
+        $this->colorY = $xy[1];
+
+        return $this;
+    }
+
     public function getColorAsHex(): string
     {
         return ColorConverter::fromXYToHex(
@@ -178,5 +239,17 @@ class Light
             $this->colorY,
             $this->getBrightness()
         );
+    }
+
+    public function setColorAsHex(string $hex): self
+    {
+        $xy = ColorConverter::fromHexToXY($hex);
+
+        $this->client->lightRequest($this, ['xy' => $xy]);
+
+        $this->colorX = $xy[0];
+        $this->colorY = $xy[1];
+
+        return $this;
     }
 }

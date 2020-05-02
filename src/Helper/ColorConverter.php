@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt\Helper;
 
+use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Rgb;
 
 class ColorConverter
@@ -36,5 +37,32 @@ class ColorConverter
         $rgb = self::fromXYToRGB($x, $y, $brightness);
 
         return (new Rgb("rgb({$rgb[0]},{$rgb[1]},{$rgb[2]})"))->toHex()->__toString();
+    }
+
+    public static function fromRGBToXY(int $red, int $green, int $blue): array
+    {
+        $red /= 255.0;
+        $green /= 255.0;
+        $blue /= 255.0;
+
+        $r = ($red > 0.04045) ? (($red + 0.055) / (1.0 + 0.055)) ** 2.4 : ($red / 12.920);
+        $g = ($green > 0.04045) ? (($green + 0.055) / (1.0 + 0.055)) ** 2.4 : ($green / 12.92);
+        $b = ($blue > 0.04045) ? (($blue + 0.055) / (1.0 + 0.055)) ** 2.4 : ($blue / 12.92);
+
+        $X = $r * 0.649926 + $g * 0.103455 + $b * 0.197109;
+        $Y = $r * 0.234327 + $g * 0.743075 + $b * 0.022598;
+        $Z = $r * 0.0000000 + $g * 0.053077 + $b * 1.035763;
+
+        $x = $X / ($X + $Y + $Z);
+        $y = $Y / ($X + $Y + $Z);
+
+        return [$x, $y];
+    }
+
+    public static function fromHexToXY(string $hex): array
+    {
+        $rgb = (new Hex($hex))->toRgb();
+
+        return static::fromRGBToXY($rgb->red(), $rgb->green(), $rgb->blue());
     }
 }

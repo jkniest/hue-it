@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt;
 
+use Prophecy\Argument;
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\DemoConstants;
@@ -77,11 +78,13 @@ class LightSpec extends ObjectBehavior
 
     public function it_can_set_the_brightness_in_percentage_and_raw_value(PhillipsHueClient $client): void
     {
-        $client->lightRequest($this, ['bri' => 203])->shouldBeCalledOnce();
+        $client->lightRequest($this, ['bri' => 204])->shouldBeCalledOnce();
         $this->setBrightness(80)->shouldBe($this);
+        $this->getBrightness(true)->shouldBe(204);
 
         $client->lightRequest($this, ['bri' => 123])->shouldBeCalledOnce();
         $this->setBrightness(123, true)->shouldBe($this);
+        $this->getBrightness(true)->shouldBe(123);
     }
 
     public function it_can_return_the_color_temperature_in_percentage_and_raw_value(): void
@@ -90,10 +93,32 @@ class LightSpec extends ObjectBehavior
         $this->getColorTemperature(true)->shouldBe(380);
     }
 
+    public function it_can_set_the_color_temperature_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['ct' => 680])->shouldBeCalledOnce();
+        $this->setColorTemperature(80)->shouldBe($this);
+        $this->getColorTemperature(true)->shouldBe(680);
+
+        $client->lightRequest($this, ['ct' => 456])->shouldBeCalledOnce();
+        $this->setColorTemperature(456, true)->shouldBe($this);
+        $this->getColorTemperature(true)->shouldBe(456);
+    }
+
     public function it_can_return_the_saturation_in_percentage_and_raw_value(): void
     {
         $this->getSaturation()->shouldBe(30);
         $this->getSaturation(true)->shouldBe(77);
+    }
+
+    public function it_can_set_the_saturation_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['sat' => 204])->shouldBeCalledOnce();
+        $this->setSaturation(80)->shouldBe($this);
+        $this->getSaturation(true)->shouldBe(204);
+
+        $client->lightRequest($this, ['sat' => 123])->shouldBeCalledOnce();
+        $this->setSaturation(123, true)->shouldBe($this);
+        $this->getSaturation(true)->shouldBe(123);
     }
 
     public function it_can_return_the_effect(): void
@@ -121,13 +146,57 @@ class LightSpec extends ObjectBehavior
         $this->getColorAsXY()->shouldBe([0.1234, 0.5678]);
     }
 
+    public function it_can_set_the_color_as_xy(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['xy' => [0.123, 0.456]])->shouldBeCalledOnce();
+
+        $this->setColorAsXY(0.123, 0.456)->shouldBe($this);
+        $this->getColorAsXY()->shouldBe([0.123, 0.456]);
+    }
+
     public function it_can_return_the_xy_color_as_rgb(): void
     {
         $this->getColorAsRGB()->shouldBe([0, 247, 141]);
     }
 
+    /** @noinspection PhpParamsInspection */
+    public function it_can_set_the_color_as_rgb(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, Argument::that(static function (array $xy): bool {
+            $xy = $xy['xy'];
+            assert($xy[0] - 0.15126647230483 <= 0.001);
+            assert($xy[1] - 0.12830512540722 <= 0.001);
+
+            return true;
+        }))->shouldBeCalledOnce();
+
+        $this->setColorAsRGB(0, 100, 200)->shouldBe($this);
+
+        $colors = $this->getColorAsXY();
+        $colors[0]->shouldBeApproximately(0.151, 3);
+        $colors[1]->shouldBeApproximately(0.128, 3);
+    }
+
     public function it_can_return_the_xy_color_as_hex(): void
     {
         $this->getColorAsHex()->shouldBe('#00f78d');
+    }
+
+    /** @noinspection PhpParamsInspection */
+    public function it_can_set_the_color_as_hex(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, Argument::that(static function (array $xy): bool {
+            $xy = $xy['xy'];
+            assert($xy[0] - 0.15126647230483 <= 0.001);
+            assert($xy[1] - 0.12830512540722 <= 0.001);
+
+            return true;
+        }))->shouldBeCalledOnce();
+
+        $this->setColorAsHex('0064c8')->shouldBe($this);
+
+        $colors = $this->getColorAsXY();
+        $colors[0]->shouldBeApproximately(0.151, 3);
+        $colors[1]->shouldBeApproximately(0.128, 3);
     }
 }
