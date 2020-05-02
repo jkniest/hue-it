@@ -21,7 +21,15 @@ class DemoConstants
             'colormode' => 'xy',
             'reachable' => false,
         ],
-        'name' => 'Example light 1',
+        'name'         => 'Example light 1',
+        'capabilities' => [
+            'control' => [
+                'ct' => [
+                    'min' => 200,
+                    'max' => 800,
+                ],
+            ],
+        ],
     ];
 
     public const CONFIG_DATA = [

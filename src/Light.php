@@ -14,6 +14,12 @@ class Light
 
     private int $brightness;
 
+    private int $colorTemperature;
+
+    private int $minColorTemperature;
+
+    private int $maxColorTemperature;
+
     private PhillipsHueClient $client;
 
     public function __construct(int $id, array $rawData, PhillipsHueClient $client)
@@ -22,6 +28,9 @@ class Light
         $this->name = $rawData['name'];
         $this->on = $rawData['state']['on'];
         $this->brightness = $rawData['state']['bri'];
+        $this->colorTemperature = $rawData['state']['ct'];
+        $this->minColorTemperature = $rawData['capabilities']['control']['ct']['min'];
+        $this->maxColorTemperature = $rawData['capabilities']['control']['ct']['max'];
 
         $this->client = $client;
     }
@@ -69,5 +78,17 @@ class Light
         }
 
         return (int) (100 / 254 * $this->brightness);
+    }
+
+    public function getColorTemperature(bool $raw = false): int
+    {
+        if ($raw) {
+            return $this->colorTemperature;
+        }
+
+        return (int) (
+            100 / ($this->maxColorTemperature - $this->minColorTemperature)
+            * ($this->colorTemperature - $this->minColorTemperature)
+        );
     }
 }

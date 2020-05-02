@@ -74,4 +74,10 @@ class LightSpec extends ObjectBehavior
         $this->getBrightness()->shouldBe(61);
         $this->getBrightness(true)->shouldBe(156);
     }
+
+    public function it_can_return_the_color_temperature_in_percentage_and_raw_value(): void
+    {
+        $this->getColorTemperature()->shouldBe(30);
+        $this->getColorTemperature(true)->shouldBe(380);
+    }
 }
