@@ -20,6 +20,7 @@ class DemoConstants
             'ct'        => 380,
             'colormode' => 'xy',
             'reachable' => false,
+            'alert'     => 'lselect',
         ],
         'name'         => 'Example light 1',
         'capabilities' => [

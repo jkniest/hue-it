@@ -80,4 +80,20 @@ class LightSpec extends ObjectBehavior
         $this->getColorTemperature()->shouldBe(30);
         $this->getColorTemperature(true)->shouldBe(380);
     }
+
+    public function it_can_return_the_saturation_in_percentage_and_raw_value(): void
+    {
+        $this->getSaturation()->shouldBe(30);
+        $this->getSaturation(true)->shouldBe(77);
+    }
+
+    public function it_can_return_the_effect(): void
+    {
+        $this->getEffect()->shouldBe('none');
+    }
+
+    public function it_can_return_the_alert(): void
+    {
+        $this->getAlert()->shouldBe('lselect');
+    }
 }

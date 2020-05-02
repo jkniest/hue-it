@@ -20,6 +20,12 @@ class Light
 
     private int $maxColorTemperature;
 
+    private int $saturation;
+
+    private string $effect;
+
+    private string $alert;
+
     private PhillipsHueClient $client;
 
     public function __construct(int $id, array $rawData, PhillipsHueClient $client)
@@ -31,6 +37,9 @@ class Light
         $this->colorTemperature = $rawData['state']['ct'];
         $this->minColorTemperature = $rawData['capabilities']['control']['ct']['min'];
         $this->maxColorTemperature = $rawData['capabilities']['control']['ct']['max'];
+        $this->saturation = $rawData['state']['sat'];
+        $this->effect = $rawData['state']['effect'];
+        $this->alert = $rawData['state']['alert'];
 
         $this->client = $client;
     }
@@ -90,5 +99,24 @@ class Light
             100 / ($this->maxColorTemperature - $this->minColorTemperature)
             * ($this->colorTemperature - $this->minColorTemperature)
         );
+    }
+
+    public function getSaturation(bool $raw = false): int
+    {
+        if ($raw) {
+            return $this->saturation;
+        }
+
+        return (int) (100 / 254 * $this->saturation);
+    }
+
+    public function getEffect(): string
+    {
+        return $this->effect;
+    }
+
+    public function getAlert(): string
+    {
+        return $this->alert;
     }
 }
