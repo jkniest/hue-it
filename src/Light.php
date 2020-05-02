@@ -33,6 +33,7 @@ class Light
     private string $colorMode;
 
     private float $colorX;
+
     private float $colorY;
 
     private PhillipsHueClient $client;
@@ -100,6 +101,19 @@ class Light
         }
 
         return (int) (100 / 254 * $this->brightness);
+    }
+
+    public function setBrightness(int $value, bool $raw = false): self
+    {
+        if ($raw) {
+            $this->client->lightRequest($this, ['bri' => $value]);
+
+            return $this;
+        }
+
+        $this->client->lightRequest($this, ['bri' => (int) (254 / 100 * $value)]);
+
+        return $this;
     }
 
     public function getColorTemperature(bool $raw = false): int

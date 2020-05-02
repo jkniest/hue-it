@@ -75,6 +75,15 @@ class LightSpec extends ObjectBehavior
         $this->getBrightness(true)->shouldBe(156);
     }
 
+    public function it_can_set_the_brightness_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['bri' => 203])->shouldBeCalledOnce();
+        $this->setBrightness(80)->shouldBe($this);
+
+        $client->lightRequest($this, ['bri' => 123])->shouldBeCalledOnce();
+        $this->setBrightness(123, true)->shouldBe($this);
+    }
+
     public function it_can_return_the_color_temperature_in_percentage_and_raw_value(): void
     {
         $this->getColorTemperature()->shouldBe(30);

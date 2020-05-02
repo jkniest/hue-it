@@ -10,46 +10,7 @@ composer require jkniest/hue-it
 ```
 
 ## Usage
-### Local network
-
-#### Authenticate
-
-Before you can use the intergration you need to authenticate against your local bridge.
-This can be done in two ways. If you already have a valid username, you may pass it as the
-second argument in the constructor:
-
-```php
-use jkniest\HueIt\PhillipsHue;
-
-$hue = new PhillipsHue('192.168.xxx.xx', 'secret-username');
-```
-
-If you don't have an username yet, this library can generate a new one. First you'll need to press
-the `LINK` button on your physical hue bridge. Afterwards you should call the `authenticate` method.
-It will return the newly generated username. You should store this username for later usage.
-
-```php
-use jkniest\HueIt\PhillipsHue;
-
-$hue = new PhillipsHue('192.168.xxx.xx');
-
-// Press LINK button before executing the authenticate method.
-$username = $hue->authenticate('Unique device name');
-```
-
-The hue instance has a few methods to get information about the configuration and bridge:
-```php
-$hue->getIp();
-$hue->getUsername();
-
-$config = $hue->getConfig();
-$config->getName();
-$config->getZigBeeChannel();
-// and many more…
-```
-
-### Via Phillips Hue Cloud
-- TODO
+// TODO: No support for hue colors currently
 
 ## Testing
 Coming soon.

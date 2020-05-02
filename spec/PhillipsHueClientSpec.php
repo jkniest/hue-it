@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt;
 
+use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\PhillipsHueClient;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -133,6 +134,34 @@ class PhillipsHueClientSpec extends ObjectBehavior
         $this->useClient($client);
 
         $this->userRequest('POST', 'resource-123', ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
+    }
+
+    public function it_can_make_light_specific_requests(Light $light): void
+    {
+        $this->setUsername('username-123');
+
+        $callback = static function (string $method, string $url, array $options) {
+            assert('PUT' === $method);
+            assert('http://123.456.78.9/api/username-123/lights/123/state' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert(true === $body['on']);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'http://123.456.78.9');
+        $this->useClient($client);
+
+        $light->getId()->willReturn(123);
+
+        $this->lightRequest($light, ['on' => true])->shouldBe([
             'key'  => 'value',
             'nice' => 'done',
         ]);

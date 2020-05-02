@@ -79,6 +79,11 @@ class PhillipsHueClient
         return $this->request($method, "{$this->username}/{$resource}", $body);
     }
 
+    public function lightRequest(Light $light, array $body): array
+    {
+        return $this->userRequest('PUT', "lights/{$light->getId()}/state", $body);
+    }
+
     public function setUsername(string $username): void
     {
         $this->username = $username;
