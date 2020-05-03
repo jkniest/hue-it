@@ -8,11 +8,11 @@ use Prophecy\Argument;
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\DemoConstants;
-use jkniest\HueIt\PhillipsHueClient;
+use jkniest\HueIt\Local\LocalHueClient;
 
 class LightSpec extends ObjectBehavior
 {
-    public function let(PhillipsHueClient $client): void
+    public function let(LocalHueClient $client): void
     {
         $this->beConstructedWith(
             10,
@@ -41,7 +41,7 @@ class LightSpec extends ObjectBehavior
         $this->isOn()->shouldBe(true);
     }
 
-    public function it_can_set_the_on_state(PhillipsHueClient $client): void
+    public function it_can_set_the_on_state(LocalHueClient $client): void
     {
         $client->userRequest('PUT', 'lights/10/state', [
             'on' => false,
@@ -52,7 +52,7 @@ class LightSpec extends ObjectBehavior
         $this->isOn()->shouldBe(false);
     }
 
-    public function it_can_turn_the_light_on(PhillipsHueClient $client): void
+    public function it_can_turn_the_light_on(LocalHueClient $client): void
     {
         $client->userRequest('PUT', 'lights/10/state', [
             'on' => true,
@@ -61,7 +61,7 @@ class LightSpec extends ObjectBehavior
         $this->turnOn();
     }
 
-    public function it_can_turn_the_light_off(PhillipsHueClient $client): void
+    public function it_can_turn_the_light_off(LocalHueClient $client): void
     {
         $client->userRequest('PUT', 'lights/10/state', [
             'on' => false,
@@ -76,7 +76,7 @@ class LightSpec extends ObjectBehavior
         $this->getBrightness(true)->shouldBe(156);
     }
 
-    public function it_can_set_the_brightness_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    public function it_can_set_the_brightness_in_percentage_and_raw_value(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['bri' => 204])->shouldBeCalledOnce();
         $this->setBrightness(80)->shouldBe($this);
@@ -93,7 +93,7 @@ class LightSpec extends ObjectBehavior
         $this->getColorTemperature(true)->shouldBe(380);
     }
 
-    public function it_can_set_the_color_temperature_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    public function it_can_set_the_color_temperature_in_percentage_and_raw_value(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['ct' => 680])->shouldBeCalledOnce();
         $this->setColorTemperature(80)->shouldBe($this);
@@ -110,7 +110,7 @@ class LightSpec extends ObjectBehavior
         $this->getSaturation(true)->shouldBe(77);
     }
 
-    public function it_can_set_the_saturation_in_percentage_and_raw_value(PhillipsHueClient $client): void
+    public function it_can_set_the_saturation_in_percentage_and_raw_value(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['sat' => 204])->shouldBeCalledOnce();
         $this->setSaturation(80)->shouldBe($this);
@@ -126,7 +126,7 @@ class LightSpec extends ObjectBehavior
         $this->getEffect()->shouldBe('none');
     }
 
-    public function it_can_set_the_effect(PhillipsHueClient $client): void
+    public function it_can_set_the_effect(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['effect' => 'colorloop'])->shouldBeCalledOnce();
 
@@ -140,7 +140,7 @@ class LightSpec extends ObjectBehavior
         $this->getAlert()->shouldBe('lselect');
     }
 
-    public function it_can_set_the_alert(PhillipsHueClient $client): void
+    public function it_can_set_the_alert(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['alert' => 'none'])->shouldBeCalledOnce();
 
@@ -164,7 +164,7 @@ class LightSpec extends ObjectBehavior
         $this->getColorAsXY()->shouldBe([0.1234, 0.5678]);
     }
 
-    public function it_can_set_the_color_as_xy(PhillipsHueClient $client): void
+    public function it_can_set_the_color_as_xy(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['xy' => [0.123, 0.456]])->shouldBeCalledOnce();
 
@@ -178,7 +178,7 @@ class LightSpec extends ObjectBehavior
     }
 
     /** @noinspection PhpParamsInspection */
-    public function it_can_set_the_color_as_rgb(PhillipsHueClient $client): void
+    public function it_can_set_the_color_as_rgb(LocalHueClient $client): void
     {
         $client->lightRequest($this, Argument::that(static function (array $xy): bool {
             $xy = $xy['xy'];
@@ -201,7 +201,7 @@ class LightSpec extends ObjectBehavior
     }
 
     /** @noinspection PhpParamsInspection */
-    public function it_can_set_the_color_as_hex(PhillipsHueClient $client): void
+    public function it_can_set_the_color_as_hex(LocalHueClient $client): void
     {
         $client->lightRequest($this, Argument::that(static function (array $xy): bool {
             $xy = $xy['xy'];
@@ -218,7 +218,7 @@ class LightSpec extends ObjectBehavior
         $colors[1]->shouldBeApproximately(0.128, 3);
     }
 
-    public function it_can_refresh_the_light(PhillipsHueClient $client): void
+    public function it_can_refresh_the_light(LocalHueClient $client): void
     {
         $this->getName()->shouldBe('Example light 1');
         $this->isOn()->shouldBe(true);

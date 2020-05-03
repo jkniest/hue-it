@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace spec\jkniest\HueIt;
+namespace spec\jkniest\HueIt\Local;
 
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
-use jkniest\HueIt\PhillipsHueClient;
+use jkniest\HueIt\Local\LocalHueClient;
 use Symfony\Component\HttpClient\MockHttpClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
-class PhillipsHueClientSpec extends ObjectBehavior
+class LocalHueClientSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -21,7 +21,7 @@ class PhillipsHueClientSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(PhillipsHueClient::class);
+        $this->shouldHaveType(LocalHueClient::class);
     }
 
     public function it_can_return_the_given_ip_address(): void

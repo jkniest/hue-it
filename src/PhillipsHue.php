@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace jkniest\HueIt;
 
 use Illuminate\Support\Collection;
+use jkniest\HueIt\Local\LocalHueClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
 
-class PhillipsHue
+class PhillipsHue implements PhillipsHueGateway
 {
-    private PhillipsHueClient $client;
+    private LocalHueClient $client;
 
     public function __construct(string $ip, ?string $username = null)
     {
-        $this->client = new PhillipsHueClient($ip, $username);
+        $this->client = new LocalHueClient($ip, $username);
     }
 
     public function getIp(): string
@@ -26,12 +27,12 @@ class PhillipsHue
         return $this->client->getUsername();
     }
 
-    public function getClient(): PhillipsHueClient
+    public function getClient(): LocalHueClient
     {
         return $this->client;
     }
 
-    public function useClient(PhillipsHueClient $client): self
+    public function useClient(LocalHueClient $client): self
     {
         $this->client = $client;
 
