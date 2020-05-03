@@ -126,9 +126,27 @@ class LightSpec extends ObjectBehavior
         $this->getEffect()->shouldBe('none');
     }
 
+    public function it_can_set_the_effect(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['effect' => 'colorloop'])->shouldBeCalledOnce();
+
+        $this->setEffect('colorloop')->shouldBe($this);
+
+        $this->getEffect()->shouldBe('colorloop');
+    }
+
     public function it_can_return_the_alert(): void
     {
         $this->getAlert()->shouldBe('lselect');
+    }
+
+    public function it_can_set_the_alert(PhillipsHueClient $client): void
+    {
+        $client->lightRequest($this, ['alert' => 'none'])->shouldBeCalledOnce();
+
+        $this->setAlert('none')->shouldBe($this);
+
+        $this->getAlert()->shouldBe('none');
     }
 
     public function it_can_return_if_its_reachable(): void

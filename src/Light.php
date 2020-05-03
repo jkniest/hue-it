@@ -181,9 +181,27 @@ class Light
         return $this->effect;
     }
 
+    public function setEffect(string $effect): self
+    {
+        $this->client->lightRequest($this, ['effect' => $effect]);
+
+        $this->effect = $effect;
+
+        return $this;
+    }
+
     public function getAlert(): string
     {
         return $this->alert;
+    }
+
+    public function setAlert(string $value): self
+    {
+        $this->client->lightRequest($this, ['alert' => $value]);
+
+        $this->alert = $value;
+
+        return $this;
     }
 
     public function isReachable(): bool
