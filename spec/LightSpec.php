@@ -217,4 +217,23 @@ class LightSpec extends ObjectBehavior
         $colors[0]->shouldBeApproximately(0.151, 3);
         $colors[1]->shouldBeApproximately(0.128, 3);
     }
+
+    public function it_can_refresh_the_light(PhillipsHueClient $client): void
+    {
+        $this->getName()->shouldBe('Example light 1');
+        $this->isOn()->shouldBe(true);
+
+        $newData = DemoConstants::LIGHT_DATA;
+        $newData['name'] = 'Changed name';
+        $newData['state']['on'] = false;
+
+        $client->userRequest('GET', 'lights/10')
+            ->shouldBeCalledOnce()
+            ->willReturn($newData);
+
+        $this->refresh()->shouldBe($this);
+
+        $this->getName()->shouldBe('Changed name');
+        $this->isOn()->shouldBe(false);
+    }
 }

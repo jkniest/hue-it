@@ -41,19 +41,7 @@ class Light
     public function __construct(int $id, array $rawData, PhillipsHueClient $client)
     {
         $this->id = $id;
-        $this->name = $rawData['name'];
-        $this->on = $rawData['state']['on'];
-        $this->brightness = $rawData['state']['bri'];
-        $this->colorTemperature = $rawData['state']['ct'];
-        $this->minColorTemperature = $rawData['capabilities']['control']['ct']['min'];
-        $this->maxColorTemperature = $rawData['capabilities']['control']['ct']['max'];
-        $this->saturation = $rawData['state']['sat'];
-        $this->effect = $rawData['state']['effect'];
-        $this->alert = $rawData['state']['alert'];
-        $this->reachable = $rawData['state']['reachable'];
-        $this->colorMode = $rawData['state']['colormode'];
-        $this->colorX = $rawData['state']['xy'][0];
-        $this->colorY = $rawData['state']['xy'][1];
+        $this->mapData($rawData);
 
         $this->client = $client;
     }
@@ -269,5 +257,34 @@ class Light
         $this->colorY = $xy[1];
 
         return $this;
+    }
+
+    public function refresh(): self
+    {
+        $rawData = $this->client->userRequest(
+            'GET',
+            "lights/{$this->id}"
+        );
+
+        $this->mapData($rawData);
+
+        return $this;
+    }
+
+    private function mapData(array $rawData): void
+    {
+        $this->name = $rawData['name'];
+        $this->on = $rawData['state']['on'];
+        $this->brightness = $rawData['state']['bri'];
+        $this->colorTemperature = $rawData['state']['ct'];
+        $this->minColorTemperature = $rawData['capabilities']['control']['ct']['min'];
+        $this->maxColorTemperature = $rawData['capabilities']['control']['ct']['max'];
+        $this->saturation = $rawData['state']['sat'];
+        $this->effect = $rawData['state']['effect'];
+        $this->alert = $rawData['state']['alert'];
+        $this->reachable = $rawData['state']['reachable'];
+        $this->colorMode = $rawData['state']['colormode'];
+        $this->colorX = $rawData['state']['xy'][0];
+        $this->colorY = $rawData['state']['xy'][1];
     }
 }
