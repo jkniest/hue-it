@@ -8,6 +8,7 @@ use jkniest\HueIt\Light;
 use jkniest\HueIt\PhillipsHueClient;
 use Symfony\Component\HttpClient\HttpClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -53,14 +54,22 @@ class LocalHueClient implements PhillipsHueClient
     }
 
     /**
+     * @throws TransportExceptionInterface
+     */
+    public function rawRequest(string $method, string $resource, ?array $body = null, array $options = []): ResponseInterface
+    {
+        return $this->client->request($method, "/api/{$resource}", array_merge([
+            'json' => $body,
+        ], $options));
+    }
+
+    /**
      * @throws PhillipsHueException
      */
     public function request(string $method, string $resource, ?array $body = null): array
     {
         try {
-            $result = $this->client->request($method, "/api/{$resource}", [
-                'json' => $body,
-            ])->toArray();
+            $result = $this->rawRequest($method, $resource, $body)->toArray();
 
             if (isset($result[0]['error'])) {
                 throw new PhillipsHueException($result[0]['error']['description'], $result[0]['error']['type']);

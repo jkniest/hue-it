@@ -9,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\Local\LocalHueClient;
 use Symfony\Component\HttpClient\MockHttpClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
@@ -48,6 +49,30 @@ class LocalHueClientSpec extends ObjectBehavior
         $this->useClient($client)
             ->getClient()
             ->shouldBe($client);
+    }
+
+    public function it_can_make_requests_against_the_bridge_and_get_the_raw_response(): void
+    {
+        $callback = static function (string $method, string $url, array $options) {
+            assert('POST' === $method);
+            assert('http://123.456.78.9/api/resource-123' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'http://123.456.78.9');
+        $this->useClient($client);
+
+        $result = $this->rawRequest('POST', 'resource-123', ['example' => 'value']);
+        $result->shouldBeAnInstanceOf(ResponseInterface::class);
+        $result->getStatusCode()->shouldBe(200);
+        $result->toArray(false)->shouldBe(['key' => 'value', 'nice' => 'done']);
     }
 
     public function it_can_make_requests_against_the_bridge(): void

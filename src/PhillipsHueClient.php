@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt;
 
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 interface PhillipsHueClient
 {
-    public function getIp(): string;
-
     public function getClient(): HttpClientInterface;
 
     public function useClient(HttpClientInterface $client): self;
+
+    public function rawRequest(string $method, string $resource, ?array $body = null, array $options = []): ResponseInterface;
 
     public function request(string $method, string $resource, ?array $body = null): array;
 
