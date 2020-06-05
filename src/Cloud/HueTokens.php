@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt\Cloud;
 
-use jkniest\HueIt\PhillipsHueClient;
+use jkniest\HueIt\PhillipsHueCloud;
+use Illuminate\Contracts\Support\Arrayable;
 
-class HueTokens
+class HueTokens implements Arrayable
 {
-    public string $accessToken;
+    private string $accessToken;
 
-    public string $refreshToken;
+    private string $refreshToken;
 
-    private PhillipsHueClient $client;
+    private PhillipsHueCloud $cloud;
 
-    public function __construct(string $accessToken, string $refreshToken, PhillipsHueClient $client)
+    public function __construct(string $accessToken, string $refreshToken, PhillipsHueCloud $cloud)
     {
         $this->accessToken = $accessToken;
         $this->refreshToken = $refreshToken;
-        $this->client = $client;
+        $this->cloud = $cloud;
     }
 
     public function getAccessToken(): string
@@ -29,5 +30,28 @@ class HueTokens
     public function getRefreshToken(): string
     {
         return $this->refreshToken;
+    }
+
+    public function refresh(): self
+    {
+        $newTokens = $this->cloud->getClient()->handleDigestAuth(
+            'oauth2/refresh?grant_type=refresh_token',
+            '/oauth2/refresh',
+            $this->cloud->getConnectionClient(),
+            ['refresh_token' => $this->refreshToken]
+        );
+
+        $this->accessToken = $newTokens['access_token'] ?? '';
+        $this->refreshToken = $newTokens['refresh_token'] ?? '';
+
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'access_token'  => $this->accessToken,
+            'refresh_token' => $this->refreshToken,
+        ];
     }
 }

@@ -12,7 +12,8 @@
         "phpspec/phpspec": "^6.1",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan": "^0.12.19",
-        "ext-json": "*"
+        "ext-json": "*",
+        "friends-of-phpspec/phpspec-code-coverage": "^4.3"
     },
     "prefer-stable": true,
     "license": "MIT",
@@ -36,7 +37,8 @@
     "scripts": {
         "test": [
             "php-cs-fixer fix --config=.php_cs --allow-risky=yes src/ spec/",
-            "phpspec run",
+            "phpspec run --config phpspec_coverage.yml",
+            "@php test-coverage.php",
             "phpstan analyse src --level=max"
         ]
     }

@@ -37,7 +37,8 @@ steps:
   - name: "test_phpspec"
     image: "jkniest/docker-testing-php:1"
     commands:
-      - "./vendor/bin/phpspec run"
+      - "./vendor/bin/phpspec run --config phpspec_coverage.yml"
+      - "php test-coverage.php"
     depends_on:
       - "rebuild_cache"
 

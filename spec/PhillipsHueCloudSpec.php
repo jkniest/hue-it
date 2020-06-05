@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt;
 
+use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\Cloud\HueClient;
 use jkniest\HueIt\Cloud\HueDevice;
 use jkniest\HueIt\Cloud\HueTokens;
 use jkniest\HueIt\PhillipsHueCloud;
 use jkniest\HueIt\Cloud\CloudHueClient;
-use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Component\HttpClient\Exception\ClientException;
 
 class PhillipsHueCloudSpec extends ObjectBehavior
 {
@@ -28,6 +26,19 @@ class PhillipsHueCloudSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(PhillipsHueCloud::class);
+    }
+
+    public function it_can_return_and_change_the_client(CloudHueClient $client): void
+    {
+        $this->useClient($client)->shouldBe($this);
+
+        $this->getClient()->shouldBe($client);
+    }
+
+    public function it_can_return_the_connection_client(): void
+    {
+        $this->getConnectionClient()->getClientId()->shouldBe('client-id-123');
+        $this->getConnectionClient()->getClientSecret()->shouldBe('client-secret-123');
     }
 
     public function it_can_generate_an_oauth_url(): void
@@ -56,51 +67,52 @@ class PhillipsHueCloudSpec extends ObjectBehavior
         );
     }
 
-    public function it_can_authenticate_with_the_code_and_client_credentials(
-        CloudHueClient $client,
-        ResponseInterface $finalResponse
-    ): void {
+    public function it_can_return_and_set_the_tokens(): void
+    {
+        $this->getTokens()->shouldBe(null);
+
+        $this->useTokens('access-123', 'refresh-123')->shouldBe($this);
+
+        $this->getTokens()->shouldBeAnInstanceOf(HueTokens::class);
+        $this->getTokens()->getAccessToken()->shouldBe('access-123');
+        $this->getTokens()->getRefreshToken()->shouldBe('refresh-123');
+    }
+
+    public function it_can_authenticate_with_a_given_code(CloudHueClient $client): void
+    {
         $this->useClient($client);
 
-        $initialResponse = new MockResponse([], [
-            'response_headers' => [
-                'www-authenticate' => [
-                    'Digest realm="oauth2_client@api.meethue.com", nonce="nonce123"',
-                ],
-            ],
-        ]);
-
-        $client->rawRequest('POST', 'oauth2/token?code=code-123&grant_type=authorization_code')
-            ->shouldBeCalledOnce()
-            ->willThrow(new ClientException($initialResponse));
-
-        $hash1 = md5('client-id-123:oauth2_client@api.meethue.com:client-secret-123');
-        $hash2 = md5('POST:/oauth2/token');
-        $finalHash = md5($hash1.':nonce123:'.$hash2);
-
-        $authHeader = 'Digest username="client-id-123", ';
-        $authHeader .= 'realm="oauth2_client@api.meethue.com", nonce="nonce123",';
-        $authHeader .= 'uri="/oauth2/token", response="'.$finalHash.'"';
-
-        $finalResponse->toArray()->willReturn([
+        $client->handleDigestAuth(
+            'oauth2/token?code=code-123&grant_type=authorization_code',
+            '/oauth2/token',
+            Argument::type(HueClient::class)
+        )->shouldBeCalledOnce()->willReturn([
             'access_token'  => 'access-123',
             'refresh_token' => 'refresh-123',
         ]);
 
-        $client->rawRequest(
-            'POST',
-            'oauth2/token?code=code-123&grant_type=authorization_code',
-            null,
-            [
-                'headers' => [
-                    'Authorization' => $authHeader,
-                ],
-            ]
-        )->shouldBeCalledOnce()->willReturn($finalResponse);
+        $result = $this->authenticate('code-123');
+        $result->getAccessToken()->shouldBe('access-123');
+        $result->getRefreshToken()->shouldBe('refresh-123');
 
-        $tokens = $this->authenticate('code-123');
-        $tokens->shouldBeAnInstanceOf(HueTokens::class);
-        $tokens->getAccessToken()->shouldBe('access-123');
-        $tokens->getRefreshToken()->shouldBe('refresh-123');
+        $this->getTokens()->shouldBe($result);
+    }
+
+    public function it_can_return_the_config(): void
+    {
+        $this->shouldThrow(\LogicException::class)
+            ->during('getConfig');
+    }
+
+    public function it_can_return_a_specific_light(): void
+    {
+        $this->shouldThrow(\LogicException::class)
+            ->during('getLight', [3]);
+    }
+
+    public function it_can_return_all_lights(): void
+    {
+        $this->shouldThrow(\LogicException::class)
+            ->during('getAllLights');
     }
 }

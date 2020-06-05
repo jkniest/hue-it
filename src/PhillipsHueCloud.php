@@ -9,8 +9,6 @@ use jkniest\HueIt\Cloud\HueClient;
 use jkniest\HueIt\Cloud\HueDevice;
 use jkniest\HueIt\Cloud\HueTokens;
 use jkniest\HueIt\Cloud\CloudHueClient;
-use jkniest\HueIt\Exceptions\PhillipsHueException;
-use Symfony\Component\HttpClient\Exception\ClientException;
 
 class PhillipsHueCloud implements PhillipsHueGateway
 {
@@ -44,6 +42,11 @@ class PhillipsHueCloud implements PhillipsHueGateway
         return $this;
     }
 
+    public function getConnectionClient(): HueClient
+    {
+        return $this->connectionClient;
+    }
+
     public function getOAuthUrl(string $state): string
     {
         $url = 'https://api.meethue.com/oauth2/auth'.
@@ -62,52 +65,29 @@ class PhillipsHueCloud implements PhillipsHueGateway
 
     public function authenticate(string $code): HueTokens
     {
-        try {
-            $this->client->rawRequest(
-                'POST',
-                "oauth2/token?code={$code}&grant_type=authorization_code"
-            );
+        $tokens = $this->client->handleDigestAuth(
+            "oauth2/token?code={$code}&grant_type=authorization_code",
+            '/oauth2/token',
+            $this->connectionClient
+        );
 
-            return new HueTokens('', '', $this->client);
-        } catch (ClientException $exception) {
-            $headers = $exception->getResponse()->getHeaders(false);
+        return $this->tokens = new HueTokens(
+            $tokens['access_token'] ?? '',
+            $tokens['refresh_token'] ?? '',
+            $this
+        );
+    }
 
-            if (!isset($headers['www-authenticate'][0])) {
-                throw new PhillipsHueException('No www-authenticate header found.', 0);
-            }
+    public function getTokens(): ?HueTokens
+    {
+        return $this->tokens;
+    }
 
-            preg_match('/nonce="([a-zA-Z0-9]+)"/', $headers['www-authenticate'][0], $result);
-            $nonce = $result[1];
+    public function useTokens(string $accessToken, string $refreshToken): self
+    {
+        $this->tokens = new HueTokens($accessToken, $refreshToken, $this);
 
-            $hash1 = md5(
-                $this->connectionClient->getClientId().
-                ':oauth2_client@api.meethue.com:'.
-                $this->connectionClient->getClientSecret()
-            );
-            $hash2 = md5('POST:/oauth2/token');
-            $response = md5($hash1.':'.$nonce.':'.$hash2);
-
-            $authHeader = 'Digest username="'.$this->connectionClient->getClientId().'", ';
-            $authHeader .= 'realm="oauth2_client@api.meethue.com", nonce="'.$nonce.'",';
-            $authHeader .= 'uri="/oauth2/token", response="'.$response.'"';
-
-            $tokens = $this->client->rawRequest(
-                'POST',
-                "oauth2/token?code={$code}&grant_type=authorization_code",
-                null,
-                [
-                    'headers' => [
-                        'Authorization' => $authHeader,
-                    ],
-                ]
-            )->toArray();
-
-            return $this->tokens = new HueTokens(
-                $tokens['access_token'],
-                $tokens['refresh_token'],
-                $this->client
-            );
-        }
+        return $this;
     }
 
     public function getConfig(): PhillipsHueConfig

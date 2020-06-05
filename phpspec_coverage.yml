@@ -1,0 +1,14 @@
+suites:
+  src:
+    namespace: jkniest\HueIt
+    psr4_prefix: jkniest\HueIt
+formatter.name: pretty
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
+      format:
+        - text
+        - html
+        - xml
+      output:
+        html: coverage/html
+        xml: coverage/xml
