@@ -63,9 +63,7 @@ class Light
 
     public function setOn(bool $on): self
     {
-        $this->client->userRequest('PUT', "lights/{$this->id}/state", [
-            'on' => $on,
-        ]);
+        $this->client->lightRequest($this, ['on' => $on]);
 
         $this->on = $on;
 

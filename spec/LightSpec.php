@@ -43,9 +43,7 @@ class LightSpec extends ObjectBehavior
 
     public function it_can_set_the_on_state(LocalHueClient $client): void
     {
-        $client->userRequest('PUT', 'lights/10/state', [
-            'on' => false,
-        ])->shouldBeCalledOnce();
+        $client->lightRequest($this, ['on' => false])->shouldBeCalledOnce();
 
         $this->setOn(false)->shouldBe($this);
 
@@ -54,18 +52,14 @@ class LightSpec extends ObjectBehavior
 
     public function it_can_turn_the_light_on(LocalHueClient $client): void
     {
-        $client->userRequest('PUT', 'lights/10/state', [
-            'on' => true,
-        ])->shouldBeCalledOnce();
+        $client->lightRequest($this, ['on' => true])->shouldBeCalledOnce();
 
         $this->turnOn();
     }
 
     public function it_can_turn_the_light_off(LocalHueClient $client): void
     {
-        $client->userRequest('PUT', 'lights/10/state', [
-            'on' => false,
-        ])->shouldBeCalledOnce();
+        $client->lightRequest($this, ['on' => false])->shouldBeCalledOnce();
 
         $this->turnOff();
     }

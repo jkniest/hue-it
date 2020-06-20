@@ -104,7 +104,7 @@ class CloudHueClient implements PhillipsHueClient
 
     public function lightRequest(Light $light, array $body): array
     {
-        throw new \LogicException('Not implemented.');
+        return $this->userRequest('PUT', "lights/{$light->getId()}/state", $body);
     }
 
     public function handleDigestAuth(string $url, string $path, HueClient $connectionClient, ?array $body = null): ?array

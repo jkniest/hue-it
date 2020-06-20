@@ -290,7 +290,31 @@ class CloudHueClientSpec extends ObjectBehavior
 
     public function it_can_make_a_light_request(Light $light): void
     {
-        $this->shouldThrow(\LogicException::class)
-            ->during('lightRequest', [$light, []]);
+        $callback = static function (string $method, string $url, array $options) {
+            assert('PUT' === $method);
+            assert('https://api.meethue.com/bridge/user-123/lights/12/state' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            assert('Authorization: Bearer access-123' === $options['normalized_headers']['authorization'][0]);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'https://api.meethue.com');
+        $this->useClient($client);
+        $this->setAccessToken('access-123');
+        $this->setUsername('user-123');
+
+        $light->getId()->willReturn(12);
+
+        $this->lightRequest($light, ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
     }
 }
