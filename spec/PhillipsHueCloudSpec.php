@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\jkniest\HueIt;
 
 use Prophecy\Argument;
+use jkniest\HueIt\Group;
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\DemoConstants;
@@ -212,5 +213,41 @@ class PhillipsHueCloudSpec extends ObjectBehavior
 
         $lights[17]->shouldBeAnInstanceOf(Light::class);
         $lights[17]->getId()->shouldBe(17);
+    }
+
+    public function it_can_return_a_specific_group(CloudHueClient $client): void
+    {
+        $client->userRequest('GET', 'groups/123')
+            ->shouldBeCalledOnce()
+            ->willReturn(DemoConstants::GROUP_DATA);
+
+        $client->setUsername(null);
+        $this->useClient($client);
+
+        $group = $this->getGroup(123);
+        $group->getId()->shouldBe(123);
+        $group->getName()->shouldBe('Example group 1');
+    }
+
+    public function it_can_return_all_groups(CloudHueClient $client): void
+    {
+        $client->userRequest('GET', 'groups')
+            ->shouldBeCalledOnce()
+            ->willReturn([
+                '8'  => DemoConstants::GROUP_DATA,
+                '17' => DemoConstants::GROUP_DATA,
+            ]);
+
+        $client->setUsername(null);
+        $this->useClient($client);
+
+        $groups = $this->getAllGroups();
+        $groups->shouldHaveCount(2);
+
+        $groups[8]->shouldBeAnInstanceOf(Group::class);
+        $groups[8]->getId()->shouldBe(8);
+
+        $groups[17]->shouldBeAnInstanceOf(Group::class);
+        $groups[17]->getId()->shouldBe(17);
     }
 }

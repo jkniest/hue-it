@@ -52,4 +52,32 @@ class DemoConstants
             ],
         ],
     ];
+
+    public const GROUP_DATA = [
+        'name'   => 'Example group 1',
+        'lights' => [
+            2,
+            5,
+        ],
+        'type'  => 'Room',
+        'state' => [
+            'all_on' => false,
+            'any_on' => true,
+        ],
+        'class'  => 'Bedroom',
+        'action' => [
+            'on'     => false,
+            'bri'    => 123,
+            'hue'    => 23804,
+            'sat'    => 254,
+            'effect' => 'none',
+            'xy'     => [
+                0.2066,
+                0.6725,
+            ],
+            'ct'        => 153,
+            'alert'     => 'lselect',
+            'colormode' => 'xy',
+        ],
+    ];
 }

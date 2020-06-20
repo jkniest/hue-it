@@ -158,4 +158,19 @@ class PhillipsHueCloud implements PhillipsHueGateway
         return collect($result)
             ->map(fn (array $data, int $id) => new Light($id, $data, $this->client));
     }
+
+    public function getGroup(int $id): Group
+    {
+        $result = $this->client->userRequest('GET', "groups/{$id}");
+
+        return new Group($id, $result, $this->client);
+    }
+
+    public function getAllGroups(): Collection
+    {
+        $result = $this->client->userRequest('GET', 'groups');
+
+        return collect($result)
+            ->map(fn (array $data, int $id) => new Group($id, $data, $this->client));
+    }
 }
