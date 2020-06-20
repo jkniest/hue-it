@@ -35,6 +35,34 @@ class CloudHueClientSpec extends ObjectBehavior
             ->shouldBe($client);
     }
 
+    public function it_can_be_constructed_with_the_username(): void
+    {
+        $this->beConstructedWith('username-123');
+
+        $this->getUsername()->shouldBe('username-123');
+    }
+
+    public function it_can_update_the_username(): void
+    {
+        $this->setUsername('another username');
+
+        $this->getUsername()->shouldBe('another username');
+    }
+
+    public function it_can_be_constructed_with_the_access_token(): void
+    {
+        $this->beConstructedWith('username', 'access-123');
+
+        $this->getAccessToken()->shouldBe('access-123');
+    }
+
+    public function it_can_update_the_access_token(): void
+    {
+        $this->setAccessToken('another access token');
+
+        $this->getAccessToken()->shouldBe('another access token');
+    }
+
     public function it_can_make_requests_against_the_api_and_get_the_raw_response(): void
     {
         $callback = static function (string $method, string $url, array $options) {
@@ -151,14 +179,113 @@ class CloudHueClientSpec extends ObjectBehavior
 
     public function it_can_make_a_normal_request(): void
     {
-        $this->shouldThrow(\LogicException::class)
-            ->during('request', ['GET', '/test']);
+        $callback = static function (string $method, string $url, array $options) {
+            assert('POST' === $method);
+            assert('https://api.meethue.com/resource-123' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'https://api.meethue.com');
+        $this->useClient($client);
+
+        $this->request('POST', 'resource-123', ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
+    }
+
+    public function it_catches_the_http_client_exceptions_and_mocks_them_in_phillips_hue_exceptions(): void
+    {
+        $client = new MockHttpClient([
+            new MockResponse('{"ok": true}', ['error' => 'Not found']),
+            new MockResponse('{"ok": true}', ['http_code' => 404]),
+        ], 'https://api.meethue.com');
+
+        $this->useClient($client);
+
+        $this->shouldThrow(new PhillipsHueException('Not found', 0))
+            ->during('request', ['GET', 'example']);
+
+        $this->shouldThrow(new PhillipsHueException('HTTP 404 returned for "https://api.meethue.com/example".', 404))
+            ->during('request', ['GET', 'example']);
+    }
+
+    public function it_handles_errors(): void
+    {
+        $client = new MockHttpClient([
+            new MockResponse(json_encode([['error' => [
+                'type'        => 123,
+                'address'     => '',
+                'description' => 'Something went wrong.',
+            ]]], JSON_THROW_ON_ERROR)),
+        ], 'https://api.meethue.com');
+
+        $this->useClient($client);
+
+        $this->shouldThrow(new PhillipsHueException('Something went wrong.', 123))
+            ->during('request', ['GET', 'example']);
+    }
+
+    public function it_can_make_auth_requests(): void
+    {
+        $callback = static function (string $method, string $url, array $options) {
+            assert('POST' === $method);
+            assert('https://api.meethue.com/resource-123' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            assert('Authorization: Bearer access-123' === $options['normalized_headers']['authorization'][0]);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'https://api.meethue.com');
+        $this->useClient($client);
+        $this->setAccessToken('access-123');
+
+        $this->authRequest('POST', 'resource-123', ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
     }
 
     public function it_can_make_a_user_request(): void
     {
-        $this->shouldThrow(\LogicException::class)
-            ->during('userRequest', ['GET', '/test']);
+        $callback = static function (string $method, string $url, array $options) {
+            assert('POST' === $method);
+            assert('https://api.meethue.com/bridge/user-123/resource-123' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            assert('Authorization: Bearer access-123' === $options['normalized_headers']['authorization'][0]);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'https://api.meethue.com');
+        $this->useClient($client);
+        $this->setAccessToken('access-123');
+        $this->setUsername('user-123');
+
+        $this->userRequest('POST', 'resource-123', ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
     }
 
     public function it_can_make_a_light_request(Light $light): void

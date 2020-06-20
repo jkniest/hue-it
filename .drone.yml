@@ -10,7 +10,6 @@ steps:
       restore: true
       mount:
         - "./vendor"
-        - "./node_modules"
     volumes:
       - name: "cache"
         path: "/cache"
