@@ -56,8 +56,8 @@ class DemoConstants
     public const GROUP_DATA = [
         'name'   => 'Example group 1',
         'lights' => [
-            2,
-            5,
+            '2',
+            '5',
         ],
         'type'  => 'Room',
         'state' => [
