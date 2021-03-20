@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt;
 
-use Illuminate\Support\Collection;
 use jkniest\HueIt\Cloud\HueClient;
 use jkniest\HueIt\Cloud\HueDevice;
 use jkniest\HueIt\Cloud\HueTokens;
 use jkniest\HueIt\Cloud\CloudHueClient;
 use jkniest\HueIt\Exceptions\PhillipsHueException;
 
-class PhillipsHueCloud implements PhillipsHueGateway
+/**
+ * @property CloudHueClient $client
+ */
+class PhillipsHueCloud extends PhillipsHueGateway
 {
-    private CloudHueClient $client;
-
     private HueClient $connectionClient;
 
     private HueDevice $device;
@@ -27,10 +27,11 @@ class PhillipsHueCloud implements PhillipsHueGateway
 
     public function __construct(HueClient $connectionClient, HueDevice $device, string $appId)
     {
+        parent::__construct(new CloudHueClient());
+
         $this->connectionClient = $connectionClient;
         $this->device = $device;
         $this->appId = $appId;
-        $this->client = new CloudHueClient();
     }
 
     public function getClient(): CloudHueClient
@@ -135,42 +136,5 @@ class PhillipsHueCloud implements PhillipsHueGateway
         $this->client->setUsername($this->username);
 
         return $this->username;
-    }
-
-    public function getConfig(): PhillipsHueConfig
-    {
-        $result = $this->client->userRequest('GET', 'config');
-
-        return new PhillipsHueConfig($result);
-    }
-
-    public function getLight(int $id): Light
-    {
-        $result = $this->client->userRequest('GET', "lights/{$id}");
-
-        return new Light($id, $result, $this->client);
-    }
-
-    public function getAllLights(): Collection
-    {
-        $result = $this->client->userRequest('GET', 'lights');
-
-        return collect($result)
-            ->map(fn (array $data, int $id) => new Light($id, $data, $this->client));
-    }
-
-    public function getGroup(int $id): Group
-    {
-        $result = $this->client->userRequest('GET', "groups/{$id}");
-
-        return new Group($id, $result, $this->client);
-    }
-
-    public function getAllGroups(): Collection
-    {
-        $result = $this->client->userRequest('GET', 'groups');
-
-        return collect($result)
-            ->map(fn (array $data, int $id) => new Group($id, $data, $this->client));
     }
 }
