@@ -84,7 +84,7 @@ class Group implements IsControllable
         return $this->allOn;
     }
 
-    public function areAnyOn(): bool
+    public function isAnyOn(): bool
     {
         return $this->anyOn;
     }

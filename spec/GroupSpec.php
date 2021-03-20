@@ -76,7 +76,7 @@ class GroupSpec extends ObjectBehavior
 
     public function it_can_return_if_any_light_is_on(): void
     {
-        $this->areAnyOn()->shouldBe(true);
+        $this->isAnyOn()->shouldBe(true);
     }
 
     public function it_can_return_the_class(): void
