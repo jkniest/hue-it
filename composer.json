@@ -3,17 +3,17 @@
     "description": "PHP wrapper for the phillips hue api",
     "type": "library",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "symfony/http-client": "^5.0",
         "illuminate/support": "^5.0|^6.0|^7.0|^8.0",
         "ozdemirburak/iris": "^2.1"
     },
     "require-dev": {
-        "phpspec/phpspec": "^6.1",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpspec/phpspec": "^7.0",
+        "friendsofphp/php-cs-fixer": "^2.17",
         "phpstan/phpstan": "^0.12.19",
         "ext-json": "*",
-        "friends-of-phpspec/phpspec-code-coverage": "^4.3"
+        "friends-of-phpspec/phpspec-code-coverage": "^6.0"
     },
     "prefer-stable": true,
     "license": "MIT",
