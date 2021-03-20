@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt\Cloud;
 
+use jkniest\HueIt\Group;
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\Cloud\HueClient;
@@ -313,6 +314,36 @@ class CloudHueClientSpec extends ObjectBehavior
         $light->getId()->willReturn(12);
 
         $this->lightRequest($light, ['example' => 'value'])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
+    }
+
+    public function it_can_make_a_group_request(Group $group): void
+    {
+        $callback = static function (string $method, string $url, array $options) {
+            assert('PUT' === $method);
+            assert('https://api.meethue.com/bridge/user-123/groups/12/action' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert('value' === $body['example']);
+
+            assert('Authorization: Bearer access-123' === $options['normalized_headers']['authorization'][0]);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'https://api.meethue.com');
+        $this->useClient($client);
+        $this->setAccessToken('access-123');
+        $this->setUsername('user-123');
+
+        $group->getId()->willReturn(12);
+
+        $this->groupRequest($group, ['example' => 'value'])->shouldBe([
             'key'  => 'value',
             'nice' => 'done',
         ]);

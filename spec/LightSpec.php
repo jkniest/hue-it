@@ -54,14 +54,14 @@ class LightSpec extends ObjectBehavior
     {
         $client->lightRequest($this, ['on' => true])->shouldBeCalledOnce();
 
-        $this->turnOn();
+        $this->turnOn()->shouldBe($this);
     }
 
     public function it_can_turn_the_light_off(LocalHueClient $client): void
     {
         $client->lightRequest($this, ['on' => false])->shouldBeCalledOnce();
 
-        $this->turnOff();
+        $this->turnOff()->shouldBe($this);
     }
 
     public function it_can_return_the_brightness_in_percentage_and_raw_value(): void
