@@ -38,7 +38,7 @@ $hue->authenticate(); // Press LINK button
 $hue->getLight(3)->turnOn();
 ```
 
-Of course, you can reuse the generated username. See [Local authentication](/authentication/local/)
+Of course, you can reuse the generated username. See [Local authentication](https://hue-it.jkniest.dev/authentication/local/)
 for more information.
 
 ### Usage (Cloud)
@@ -53,7 +53,7 @@ as you like.
 We recommend that you'll read the basics of [OAuth2](https://oauth.net/2/)
 before continuing.
 
-For more information see [Cloud authentication](/authentication/cloud/).
+For more information see [Cloud authentication](https://hue-it.jkniest.dev/authentication/cloud/).
 
 ```php
 use jkniest\HueIt\PhillipsHueCloud;
