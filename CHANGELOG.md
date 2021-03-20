@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed
 - Packages
 
-## Unreleased
+## 0.1.0 - 2021-03-20
 ### Added
 - `All` Initial release
 - `All` Added support for local and cloud connections to the Phillips Hue API
