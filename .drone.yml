@@ -17,7 +17,6 @@ steps:
   - name: "prepare_php"
     image: "jkniest/docker-testing-php:1"
     commands:
-      - "rm composer.lock"
       - "composer update --prefer-stable"
     depends_on:
       - "restore_cache"
@@ -80,7 +79,6 @@ steps:
   - name: "prepare_php"
     image: "jkniest/docker-testing-php:1"
     commands:
-      - "rm composer.lock"
       - "composer update --prefer-lowest"
     depends_on:
       - "restore_cache"
@@ -143,7 +141,6 @@ steps:
   - name: "prepare_php"
     image: "jkniest/docker-testing-php:2"
     commands:
-      - "rm composer.lock"
       - "composer update --prefer-stable"
     depends_on:
       - "restore_cache"
@@ -206,7 +203,6 @@ steps:
   - name: "prepare_php"
     image: "jkniest/docker-testing-php:2"
     commands:
-      - "rm composer.lock"
       - "composer update --prefer-lowest"
     depends_on:
       - "restore_cache"
