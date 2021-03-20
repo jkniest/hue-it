@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace jkniest\HueIt\Local;
 
+use jkniest\HueIt\Group;
 use jkniest\HueIt\Light;
 use jkniest\HueIt\PhillipsHueClient;
 use Symfony\Component\HttpClient\HttpClient;
@@ -93,6 +94,11 @@ class LocalHueClient implements PhillipsHueClient
     public function lightRequest(Light $light, array $body): array
     {
         return $this->userRequest('PUT', "lights/{$light->getId()}/state", $body);
+    }
+
+    public function groupRequest(Group $group, array $body): array
+    {
+        return $this->userRequest('PUT', "groups/{$group->getId()}/action", $body);
     }
 
     public function setUsername(string $username): void

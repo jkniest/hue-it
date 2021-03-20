@@ -6,7 +6,7 @@ namespace jkniest\HueIt;
 
 use jkniest\HueIt\Helper\ColorConverter;
 
-class Light
+class Light implements IsControllable
 {
     private string $name;
 
@@ -70,14 +70,14 @@ class Light
         return $this;
     }
 
-    public function turnOn(): void
+    public function turnOn(): self
     {
-        $this->setOn(true);
+        return $this->setOn(true);
     }
 
-    public function turnOff(): void
+    public function turnOff(): self
     {
-        $this->setOn(false);
+        return $this->setOn(false);
     }
 
     public function getBrightness(bool $raw = false): int

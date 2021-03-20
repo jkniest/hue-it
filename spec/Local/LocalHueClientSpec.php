@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\jkniest\HueIt\Local;
 
+use jkniest\HueIt\Group;
 use jkniest\HueIt\Light;
 use PhpSpec\ObjectBehavior;
 use jkniest\HueIt\Local\LocalHueClient;
@@ -187,6 +188,34 @@ class LocalHueClientSpec extends ObjectBehavior
         $light->getId()->willReturn(123);
 
         $this->lightRequest($light, ['on' => true])->shouldBe([
+            'key'  => 'value',
+            'nice' => 'done',
+        ]);
+    }
+
+    public function it_can_make_group_specific_requests(Group $group): void
+    {
+        $this->setUsername('username-123');
+
+        $callback = static function (string $method, string $url, array $options) {
+            assert('PUT' === $method);
+            assert('http://123.456.78.9/api/username-123/groups/123/action' === $url);
+
+            $body = json_decode($options['body'], true, 512, JSON_THROW_ON_ERROR);
+            assert(true === $body['on']);
+
+            return new MockResponse(json_encode([
+                'key'  => 'value',
+                'nice' => 'done',
+            ], JSON_THROW_ON_ERROR));
+        };
+
+        $client = new MockHttpClient($callback, 'http://123.456.78.9');
+        $this->useClient($client);
+
+        $group->getId()->willReturn(123);
+
+        $this->groupRequest($group, ['on' => true])->shouldBe([
             'key'  => 'value',
             'nice' => 'done',
         ]);

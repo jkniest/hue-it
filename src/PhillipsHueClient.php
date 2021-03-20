@@ -20,4 +20,6 @@ interface PhillipsHueClient
     public function userRequest(string $method, string $resource, ?array $body = null): array;
 
     public function lightRequest(Light $light, array $body): array;
+
+    public function groupRequest(Group $group, array $body): array;
 }
