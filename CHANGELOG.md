@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed
 - Packages
 
+## [0.1.1] - 2021-03-21
+### Fixed
+- Fixed issue with group 0 (all lights). Class can be null
+
 ## 0.1.0 - 2021-03-20
 ### Added
 - `All` Initial release
@@ -25,3 +29,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Alert (none / select / lselect)
     - Color (XY, Hex, RGB)
 - `Cloud` Full OAuth2 authentication flow (including Digest Auth)
+
+[0.1.1]: https://github.com/jkniest/hue-it/compare/0.1.0...0.1.1

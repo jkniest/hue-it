@@ -24,7 +24,7 @@ class Group implements IsControllable
 
     private bool $anyOn;
 
-    private string $class;
+    private ?string $class;
 
     private int $brightness;
 
@@ -89,7 +89,7 @@ class Group implements IsControllable
         return $this->anyOn;
     }
 
-    public function getClass(): string
+    public function getClass(): ?string
     {
         return $this->class;
     }
@@ -291,7 +291,7 @@ class Group implements IsControllable
         $this->type = $rawData['type'];
         $this->allOn = $rawData['state']['all_on'];
         $this->anyOn = $rawData['state']['any_on'];
-        $this->class = $rawData['class'];
+        $this->class = $rawData['class'] ?? null;
 
         $this->brightness = $rawData['action']['bri'];
         $this->colorTemperature = $rawData['action']['ct'];
