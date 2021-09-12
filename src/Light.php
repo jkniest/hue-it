@@ -220,7 +220,7 @@ class Light implements IsControllable
         return ColorConverter::fromXYToRGB(
             $this->colorX,
             $this->colorY,
-            $this->getBrightness()
+            $this->getBrightness(),
         );
     }
 
@@ -241,7 +241,7 @@ class Light implements IsControllable
         return ColorConverter::fromXYToHex(
             $this->colorX,
             $this->colorY,
-            $this->getBrightness()
+            $this->getBrightness(),
         );
     }
 
@@ -261,7 +261,7 @@ class Light implements IsControllable
     {
         $rawData = $this->client->userRequest(
             'GET',
-            "lights/{$this->id}"
+            "lights/{$this->id}",
         );
 
         $this->mapData($rawData);

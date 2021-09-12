@@ -82,10 +82,10 @@ class CloudHueClient implements PhillipsHueClient
             }
 
             return $result;
-        } catch (ClientExceptionInterface |
-        DecodingExceptionInterface |
-        RedirectionExceptionInterface |
-        ServerExceptionInterface |
+        } catch (ClientExceptionInterface|
+        DecodingExceptionInterface|
+        RedirectionExceptionInterface|
+        ServerExceptionInterface|
         TransportExceptionInterface $e) {
             throw new PhillipsHueException($e->getMessage(), $e->getCode(), $e);
         }
@@ -130,9 +130,9 @@ class CloudHueClient implements PhillipsHueClient
             $nonce = $result[1];
 
             $hash1 = md5(
-                $connectionClient->getClientId().
-                ':oauth2_client@api.meethue.com:'.
-                $connectionClient->getClientSecret()
+                $connectionClient->getClientId()
+                .':oauth2_client@api.meethue.com:'
+                .$connectionClient->getClientSecret(),
             );
             $hash2 = md5('POST:'.$path);
             $response = md5($hash1.':'.$nonce.':'.$hash2);

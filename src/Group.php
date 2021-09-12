@@ -146,7 +146,7 @@ class Group implements IsControllable
 
         throw new PhillipsHueException(
             'Groups do currently not support color temperatures with percentage values.',
-            -1
+            -1,
         );
     }
 
@@ -155,7 +155,7 @@ class Group implements IsControllable
         if (!$raw) {
             throw new PhillipsHueException(
                 'Groups do currently not support color temperatures with percentage values.',
-                -1
+                -1,
             );
         }
 
@@ -239,7 +239,7 @@ class Group implements IsControllable
         return ColorConverter::fromXYToRGB(
             $this->colorX,
             $this->colorY,
-            $this->getBrightness()
+            $this->getBrightness(),
         );
     }
 
@@ -258,7 +258,7 @@ class Group implements IsControllable
         return ColorConverter::fromXYToHex(
             $this->colorX,
             $this->colorY,
-            $this->getBrightness()
+            $this->getBrightness(),
         );
     }
 
@@ -276,7 +276,7 @@ class Group implements IsControllable
     {
         $rawData = $this->client->userRequest(
             'GET',
-            "groups/{$this->id}"
+            "groups/{$this->id}",
         );
 
         $this->mapData($rawData);

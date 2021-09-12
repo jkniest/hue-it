@@ -10,11 +10,12 @@
     },
     "require-dev": {
         "phpspec/phpspec": "^7.0.1",
-        "friendsofphp/php-cs-fixer": "^2.18.3",
         "phpstan/phpstan": "^0.12.82",
         "ext-json": "*",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
-        "phpunit/php-code-coverage": "^9.2.5"
+        "phpunit/php-code-coverage": "^9.2.5",
+        "jkniest/linting": "^1.2",
+        "friendsofphp/php-cs-fixer": "3.1.*"
     },
     "prefer-stable": true,
     "license": "MIT",
@@ -37,7 +38,7 @@
     },
     "scripts": {
         "test": [
-            "php-cs-fixer fix --config=.php_cs --allow-risky=yes src/ spec/",
+            "php-cs-fixer fix --config=.php-cs-fixer.php",
             "phpspec run --config phpspec_coverage.yml",
             "@php test-coverage.php",
             "phpstan analyse src --level=max"

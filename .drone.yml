@@ -44,7 +44,7 @@ steps:
   - name: "test_phpcsfixer"
     image: "jkniest/docker-testing-php:1"
     commands:
-      - "./vendor/bin/php-cs-fixer fix --config=.php_cs --allow-risky=yes --dry-run src/ spec/"
+      - "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run"
     depends_on:
       - "rebuild_cache"
 
@@ -106,7 +106,7 @@ steps:
   - name: "test_phpcsfixer"
     image: "jkniest/docker-testing-php:1"
     commands:
-      - "./vendor/bin/php-cs-fixer fix --config=.php_cs --allow-risky=yes --dry-run src/ spec/"
+      - "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run"
     depends_on:
       - "rebuild_cache"
 
@@ -168,7 +168,7 @@ steps:
   - name: "test_phpcsfixer"
     image: "jkniest/docker-testing-php:2"
     commands:
-      - "./vendor/bin/php-cs-fixer fix --config=.php_cs --allow-risky=yes --dry-run src/ spec/"
+      - "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run"
     depends_on:
       - "rebuild_cache"
 
@@ -230,7 +230,7 @@ steps:
   - name: "test_phpcsfixer"
     image: "jkniest/docker-testing-php:2"
     commands:
-      - "./vendor/bin/php-cs-fixer fix --config=.php_cs --allow-risky=yes --dry-run src/ spec/"
+      - "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run"
     depends_on:
       - "rebuild_cache"
 
