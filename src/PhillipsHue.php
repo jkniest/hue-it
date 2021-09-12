@@ -15,7 +15,7 @@ class PhillipsHue extends PhillipsHueGateway
     public function __construct(string $ip, ?string $username = null)
     {
         parent::__construct(
-            new LocalHueClient($ip, $username)
+            new LocalHueClient($ip, $username),
         );
     }
 

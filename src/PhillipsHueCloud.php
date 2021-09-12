@@ -58,12 +58,12 @@ class PhillipsHueCloud extends PhillipsHueGateway
 
     public function getOAuthUrl(string $state): string
     {
-        $url = 'https://api.meethue.com/oauth2/auth'.
-            '?clientid='.$this->connectionClient->getClientId().
-            '&appid='.$this->appId.
-            '&deviceid='.$this->device->getId().
-            '&state='.$state.
-            '&response_type=code';
+        $url = 'https://api.meethue.com/oauth2/auth'
+            .'?clientid='.$this->connectionClient->getClientId()
+            .'&appid='.$this->appId
+            .'&deviceid='.$this->device->getId()
+            .'&state='.$state
+            .'&response_type=code';
 
         if (null !== $this->device->getName()) {
             $url .= '&devicename='.$this->device->getName();
@@ -77,13 +77,13 @@ class PhillipsHueCloud extends PhillipsHueGateway
         $tokens = $this->client->handleDigestAuth(
             "oauth2/token?code={$code}&grant_type=authorization_code",
             '/oauth2/token',
-            $this->connectionClient
+            $this->connectionClient,
         );
 
         $this->tokens = new HueTokens(
             $tokens['access_token'] ?? '',
             $tokens['refresh_token'] ?? '',
-            $this
+            $this,
         );
 
         $this->client->setAccessToken($this->tokens->getAccessToken());

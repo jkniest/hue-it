@@ -38,7 +38,7 @@ class HueTokens implements Arrayable
             'oauth2/refresh?grant_type=refresh_token',
             '/oauth2/refresh',
             $this->cloud->getConnectionClient(),
-            ['refresh_token' => $this->refreshToken]
+            ['refresh_token' => $this->refreshToken],
         );
 
         $this->accessToken = $newTokens['access_token'] ?? '';

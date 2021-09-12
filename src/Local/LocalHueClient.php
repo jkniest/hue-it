@@ -77,10 +77,10 @@ class LocalHueClient implements PhillipsHueClient
             }
 
             return $result;
-        } catch (ClientExceptionInterface |
-        DecodingExceptionInterface |
-        RedirectionExceptionInterface |
-        ServerExceptionInterface |
+        } catch (ClientExceptionInterface|
+        DecodingExceptionInterface|
+        RedirectionExceptionInterface|
+        ServerExceptionInterface|
         TransportExceptionInterface $e) {
             throw new PhillipsHueException($e->getMessage(), $e->getCode(), $e);
         }
