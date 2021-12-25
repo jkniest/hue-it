@@ -33,4 +33,11 @@ class PhillipsHueExceptionSpec extends ObjectBehavior
 
         $this->getPrevious()->shouldBe($exception);
     }
+
+    public function it_converts_non_integer_codes_to_integer(): void
+    {
+        $this->beConstructedWith('Example error message', 'invalid');
+
+        $this->getCode()->shouldBe(-1);
+    }
 }
