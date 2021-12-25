@@ -10,12 +10,12 @@
     },
     "require-dev": {
         "phpspec/phpspec": "^7.0.1",
-        "phpstan/phpstan": "^0.12.82",
+        "phpstan/phpstan": "^1.0",
         "ext-json": "*",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
         "phpunit/php-code-coverage": "^9.2.5",
         "jkniest/linting": "^1.2",
-        "friendsofphp/php-cs-fixer": "3.1.*"
+        "friendsofphp/php-cs-fixer": "3.4.0"
     },
     "prefer-stable": true,
     "license": "MIT",
