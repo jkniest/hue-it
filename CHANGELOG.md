@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed
 - Packages
 
+## Unreleased
+### Packages
+- Update php cs fixer and phpstan
+
 ## [0.1.1] - 2021-03-21
 ### Fixed
 - Fixed issue with group 0 (all lights). Class can be null
