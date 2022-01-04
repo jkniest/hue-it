@@ -13,8 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Packages
 
 ## Unreleased
+### Added
+- Added initial support for php 8.1
+
 ### Packages
-- Update php cs fixer and phpstan
+- Updated php cs fixer and phpstan
 
 ## [0.1.1] - 2021-03-21
 ### Fixed
