@@ -5,8 +5,8 @@
     "require": {
         "php": "^7.4|^8.0|^8.1",
         "symfony/http-client": "^5.0|^6.0",
-        "illuminate/support": "^6.0|^7.0|^8.0",
-        "ozdemirburak/iris": "^2.1"
+        "ozdemirburak/iris": "^2.1",
+        "illuminate/collections": "~8.67"
     },
     "require-dev": {
         "phpspec/phpspec": "^7.0.1",
