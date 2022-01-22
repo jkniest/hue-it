@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed
 - Packages
 
+## Unreleased
+### Packages
+- Updated php cs fixer
+
 ## [0.2.0] - 2022-01-04
 ### Added
 - Added initial support for php 8.1
