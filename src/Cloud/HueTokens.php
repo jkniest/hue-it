@@ -7,6 +7,9 @@ namespace jkniest\HueIt\Cloud;
 use jkniest\HueIt\PhillipsHueCloud;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements  Arrayable<string, string>
+ */
 class HueTokens implements Arrayable
 {
     private string $accessToken;
