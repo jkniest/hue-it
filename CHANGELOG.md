@@ -13,8 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Packages
 
 ## Unreleased
+### Added
+- Added generic phpdocs for all collections
+
 ### Packages
 - Updated php cs fixer
+- Allow `ozdemirburak/iris` library version 3
+- Allow `illuminate/collections` library version 9
 
 ## [0.2.0] - 2022-01-04
 ### Added

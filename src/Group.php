@@ -16,6 +16,7 @@ class Group implements IsControllable
 
     private string $name;
 
+    /** @var Collection<int, int> */
     private Collection $lightIds;
 
     private string $type;
@@ -60,11 +61,17 @@ class Group implements IsControllable
         return $this->name;
     }
 
+    /**
+     * @return Collection<int, int>
+     */
     public function getLightIds(): Collection
     {
         return $this->lightIds;
     }
 
+    /**
+     * @return Collection<int, Light>
+     */
     public function getLights(): Collection
     {
         $result = $this->client->userRequest('GET', 'lights');
@@ -287,7 +294,7 @@ class Group implements IsControllable
     private function mapData(array $rawData): void
     {
         $this->name = $rawData['name'];
-        $this->lightIds = collect($rawData['lights'])->map(static fn (string $id) => (int) $id);
+        $this->lightIds = (new Collection($rawData['lights']))->map(static fn (string $id) => (int) $id);
         $this->type = $rawData['type'];
         $this->allOn = $rawData['state']['all_on'];
         $this->anyOn = $rawData['state']['any_on'];

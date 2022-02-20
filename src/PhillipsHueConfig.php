@@ -18,6 +18,7 @@ class PhillipsHueConfig
 
     private bool $linkButtonPressed;
 
+    /** @var Collection<int, WhitelistDevice> */
     private Collection $whitelist;
 
     private array $rawData;
@@ -32,7 +33,7 @@ class PhillipsHueConfig
         $this->apiVersion = $raw['apiversion'];
         $this->linkButtonPressed = $raw['linkbutton'];
 
-        $this->whitelist = collect($raw['whitelist'])
+        $this->whitelist = (new Collection($raw['whitelist']))
             ->map(static fn (array $device, string $key) => new WhitelistDevice($key, $device))
             ->values();
     }
@@ -62,6 +63,9 @@ class PhillipsHueConfig
         return $this->linkButtonPressed;
     }
 
+    /**
+     * @return Collection<int, WhitelistDevice>
+     */
     public function getWhitelist(): Collection
     {
         return $this->whitelist;

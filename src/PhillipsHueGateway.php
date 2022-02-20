@@ -29,6 +29,9 @@ abstract class PhillipsHueGateway
         return new Light($id, $result, $this->client);
     }
 
+    /**
+     * @return Collection<int, Light>
+     */
     public function getAllLights(): Collection
     {
         $result = $this->client->userRequest('GET', 'lights');
@@ -44,6 +47,9 @@ abstract class PhillipsHueGateway
         return new Group($id, $result, $this->client);
     }
 
+    /**
+     * @return Collection<int, Group>
+     */
     public function getAllGroups(): Collection
     {
         $result = $this->client->userRequest('GET', 'groups');

@@ -1,4 +1,7 @@
 parameters:
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
     excludePaths:
         - 'src/Helper/ColorConverter.php'
+    ignoreErrors:
+        - '#PHPDoc tag @implements contains generic type#'
