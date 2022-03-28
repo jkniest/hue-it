@@ -15,7 +15,7 @@
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
         "phpunit/php-code-coverage": "^9.2.5",
         "jkniest/linting": "^1.2",
-        "friendsofphp/php-cs-fixer": "3.6.0"
+        "friendsofphp/php-cs-fixer": "3.8.0"
     },
     "prefer-stable": true,
     "license": "MIT",
