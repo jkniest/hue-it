@@ -3,3 +3,5 @@ vendor/
 .php-cs-fixer.cache
 coverage/
 composer.lock
+node_modules/
+docs/.vitepress/dist
