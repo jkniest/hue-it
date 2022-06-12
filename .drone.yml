@@ -369,3 +369,49 @@ volumes:
   - name: cache
     host:
       path: /tmp/drone/cache
+---
+kind: "pipeline"
+type: "docker"
+name: "docs"
+
+steps:
+  - name: "restore_cache"
+    image: "drillster/drone-volume-cache"
+    settings:
+      restore: true
+      mount:
+        - "./node_modules"
+    volumes:
+      - name: "cache"
+        path: "/cache"
+
+  - name: "prepare_node"
+    image: "jkniest/docker-testing-php:3"
+    commands:
+      - "npm ci"
+    depends_on:
+      - "restore_cache"
+
+  - name: "rebuild_cache"
+    image: "drillster/drone-volume-cache"
+    settings:
+      rebuild: true
+      mount:
+        - "./node_modules"
+    volumes:
+      - name: "cache"
+        path: "/cache"
+    depends_on:
+      - "prepare_node"
+
+  - name: "build documentation"
+    image: "jkniest/docker-testing-php:3"
+    commands:
+      - "npm run docs:build"
+    depends_on:
+      - "rebuild_cache"
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/drone/cache
