@@ -386,7 +386,7 @@ steps:
         path: "/cache"
 
   - name: "prepare_node"
-    image: "jkniest/docker-testing-php:3"
+    image: "node:16"
     commands:
       - "npm ci"
     depends_on:
@@ -405,7 +405,7 @@ steps:
       - "prepare_node"
 
   - name: "build documentation"
-    image: "jkniest/docker-testing-php:3"
+    image: "node:16"
     commands:
       - "npm run docs:build"
     depends_on:
