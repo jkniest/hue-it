@@ -14,8 +14,7 @@ export default {
             {
                 text: 'Basics',
                 items: [
-                    { text: 'Home', link: '/' },
-                    { text: 'Getting started', link: '/#getting-started' },
+                    { text: 'Getting started', link: '/' },
                 ]
             },
             {
