@@ -1,14 +1,15 @@
 name: test
 on: [push]
+
+strategy:
+  matrix:
+    php-version: [ 8.0, 8.1 ]
+    composer-strategy: [ lowest, stable ]
+
 jobs:
   php-cs-fixer:
     name: PHP CS Fixer
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        php-version: [ 8.0, 8.1 ]
-        composer-strategy: [ lowest, stable ]
 
     steps:
       - name: Setup PHP
@@ -33,3 +34,31 @@ jobs:
 
       - name: Run PHP CS fixer
         run: './vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run'
+
+  phpstan:
+    name: PHPstan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Cache composer dependencies
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-strategy-${{ matrix.composer-strategy }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-strategy-${{ matrix.composer-strategy }}
+
+      - name: Install dependencies
+        run: 'composer update -W --prefer-${{ matrix.composer-strategy }} --no-ansi --no-interaction --no-progress --optimize-autoloader'
+
+      - name: Run PHPstan
+        run: './vendor/bin/phpstan analyse src --level=max'
