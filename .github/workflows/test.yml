@@ -1,15 +1,15 @@
 name: test
 on: [push]
 
-strategy:
-  matrix:
-    php-version: [ 8.0, 8.1 ]
-    composer-strategy: [ lowest, stable ]
-
 jobs:
   php-cs-fixer:
     name: PHP CS Fixer
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: [ 8.0, 8.1 ]
+        composer-strategy: [ lowest, stable ]
 
     steps:
       - name: Setup PHP
@@ -38,6 +38,11 @@ jobs:
   phpstan:
     name: PHPstan
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: [ 8.0, 8.1 ]
+        composer-strategy: [ lowest, stable ]
 
     steps:
       - name: Setup PHP
