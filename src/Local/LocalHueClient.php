@@ -19,16 +19,12 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 
 class LocalHueClient implements PhillipsHueClient
 {
-    private string $ip;
-
-    private ?string $username;
-
     private HttpClientInterface $client;
 
-    public function __construct(string $ip, ?string $username = null)
-    {
-        $this->ip = $ip;
-        $this->username = $username;
+    public function __construct(
+        private string $ip,
+        private ?string $username = null
+    ) {
         $this->client = HttpClient::createForBaseUri('http://'.$ip);
     }
 

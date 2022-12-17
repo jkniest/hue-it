@@ -21,19 +21,16 @@ class PhillipsHueConfig
     /** @var Collection<int, WhitelistDevice> */
     private Collection $whitelist;
 
-    private array $rawData;
+    public function __construct(
+        private array $rawData
+    ) {
+        $this->name = $this->rawData['name'];
+        $this->zigBeeChannel = $this->rawData['zigbeechannel'];
+        $this->modelId = $this->rawData['modelid'];
+        $this->apiVersion = $this->rawData['apiversion'];
+        $this->linkButtonPressed = $this->rawData['linkbutton'];
 
-    public function __construct(array $raw)
-    {
-        $this->rawData = $raw;
-
-        $this->name = $raw['name'];
-        $this->zigBeeChannel = $raw['zigbeechannel'];
-        $this->modelId = $raw['modelid'];
-        $this->apiVersion = $raw['apiversion'];
-        $this->linkButtonPressed = $raw['linkbutton'];
-
-        $this->whitelist = (new Collection($raw['whitelist']))
+        $this->whitelist = (new Collection($this->rawData['whitelist']))
             ->map(static fn (array $device, string $key) => new WhitelistDevice($key, $device))
             ->values();
     }

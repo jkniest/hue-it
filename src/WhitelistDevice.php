@@ -8,17 +8,16 @@ use DateTimeImmutable;
 
 class WhitelistDevice
 {
-    private string $id;
-
     private string $name;
 
     private DateTimeImmutable $lastUseDate;
 
     private DateTimeImmutable $createDate;
 
-    public function __construct(string $id, array $rawData)
-    {
-        $this->id = $id;
+    public function __construct(
+        private string $id,
+        array $rawData
+    ) {
         $this->name = $rawData['name'];
 
         $this->lastUseDate = new DateTimeImmutable($rawData['last use date']);

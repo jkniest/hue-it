@@ -6,14 +6,10 @@ namespace jkniest\HueIt\Cloud;
 
 class HueClient
 {
-    private string $clientId;
-
-    private string $clientSecret;
-
-    public function __construct(string $clientId, string $clientSecret)
-    {
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
+    public function __construct(
+        private string $clientId,
+        private string $clientSecret
+    ) {
     }
 
     public function getClientId(): string

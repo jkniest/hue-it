@@ -8,11 +8,9 @@ use Illuminate\Support\Collection;
 
 abstract class PhillipsHueGateway
 {
-    protected PhillipsHueClient $client;
-
-    public function __construct(PhillipsHueClient $client)
-    {
-        $this->client = $client;
+    public function __construct(
+        protected PhillipsHueClient $client
+    ) {
     }
 
     public function getConfig(): PhillipsHueConfig

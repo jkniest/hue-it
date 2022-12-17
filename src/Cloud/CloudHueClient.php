@@ -22,15 +22,11 @@ class CloudHueClient implements PhillipsHueClient
 {
     private HttpClientInterface $client;
 
-    private ?string $username;
-
-    private ?string $accessToken;
-
-    public function __construct(?string $username = null, ?string $accessToken = null)
-    {
+    public function __construct(
+        private ?string $username = null,
+        private ?string $accessToken = null
+    ) {
         $this->client = HttpClient::createForBaseUri('https://api.meethue.com');
-        $this->username = $username;
-        $this->accessToken = $accessToken;
     }
 
     public function getUsername(): ?string

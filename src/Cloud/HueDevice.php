@@ -6,14 +6,10 @@ namespace jkniest\HueIt\Cloud;
 
 class HueDevice
 {
-    private string $id;
-
-    private ?string $name;
-
-    public function __construct(string $id, ?string $name = null)
-    {
-        $this->id = $id;
-        $this->name = $name;
+    public function __construct(
+        private string $id,
+        private ?string $name = null
+    ) {
     }
 
     public function getId(): string

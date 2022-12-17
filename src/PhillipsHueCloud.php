@@ -15,23 +15,16 @@ use jkniest\HueIt\Exceptions\PhillipsHueException;
  */
 class PhillipsHueCloud extends PhillipsHueGateway
 {
-    private HueClient $connectionClient;
-
-    private HueDevice $device;
-
-    private string $appId;
-
     private ?HueTokens $tokens = null;
 
     private ?string $username = null;
 
-    public function __construct(HueClient $connectionClient, HueDevice $device, string $appId)
-    {
+    public function __construct(
+        private HueClient $connectionClient,
+        private HueDevice $device,
+        private string $appId
+    ) {
         parent::__construct(new CloudHueClient());
-
-        $this->connectionClient = $connectionClient;
-        $this->device = $device;
-        $this->appId = $appId;
     }
 
     public function getClient(): CloudHueClient
