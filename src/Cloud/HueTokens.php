@@ -12,17 +12,11 @@ use Illuminate\Contracts\Support\Arrayable;
  */
 class HueTokens implements Arrayable
 {
-    private string $accessToken;
-
-    private string $refreshToken;
-
-    private PhillipsHueCloud $cloud;
-
-    public function __construct(string $accessToken, string $refreshToken, PhillipsHueCloud $cloud)
-    {
-        $this->accessToken = $accessToken;
-        $this->refreshToken = $refreshToken;
-        $this->cloud = $cloud;
+    public function __construct(
+        private string $accessToken,
+        private string $refreshToken,
+        private PhillipsHueCloud $cloud
+    ) {
     }
 
     public function getAccessToken(): string

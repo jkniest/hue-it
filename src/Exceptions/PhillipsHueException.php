@@ -9,10 +9,7 @@ use Throwable;
 
 class PhillipsHueException extends Exception
 {
-    /**
-     * @param int|mixed $code
-     */
-    public function __construct(string $message, $code, ?Throwable $previous = null)
+    public function __construct(string $message, mixed $code, ?Throwable $previous = null)
     {
         if (!is_int($code)) {
             $code = -1;

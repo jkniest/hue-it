@@ -85,6 +85,15 @@ create a new Gateway class and / or client class which returns mocked or fake da
 
 Generally it is planned to provide a full test mode.
 
+## PHP compatibility
+Please use the following table to check which version can be used for your PHP version
+
+| PHP Version | Newest hue-it version | Supported |
+|-------------|-----------------------|-----------|
+| v8.1        | v0.2.*                | ✅         |
+| v8.0        | v0.2.*                | ✅         |
+| v7.4        | v0.2.*                | ❌         |
+
 ## Roadmap
 - Test mode
 - Creating / Deleting / Editing groups and lights

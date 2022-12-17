@@ -12,8 +12,6 @@ class Light implements IsControllable
 
     private bool $on;
 
-    private int $id;
-
     private int $brightness;
 
     private int $colorTemperature;
@@ -36,14 +34,12 @@ class Light implements IsControllable
 
     private float $colorY;
 
-    private PhillipsHueClient $client;
-
-    public function __construct(int $id, array $rawData, PhillipsHueClient $client)
-    {
-        $this->id = $id;
+    public function __construct(
+        private int $id,
+        array $rawData,
+        private PhillipsHueClient $client
+    ) {
         $this->mapData($rawData);
-
-        $this->client = $client;
     }
 
     public function getId(): int

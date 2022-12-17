@@ -10,10 +10,6 @@ use jkniest\HueIt\Exceptions\PhillipsHueException;
 
 class Group implements IsControllable
 {
-    private PhillipsHueClient $client;
-
-    private int $id;
-
     private string $name;
 
     /** @var Collection<int, int> */
@@ -43,12 +39,12 @@ class Group implements IsControllable
 
     private float $colorY;
 
-    public function __construct(int $id, array $rawData, PhillipsHueClient $client)
-    {
-        $this->id = $id;
+    public function __construct(
+        private int $id,
+        array $rawData,
+        private PhillipsHueClient $client
+    ) {
         $this->mapData($rawData);
-
-        $this->client = $client;
     }
 
     public function getId(): int

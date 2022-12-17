@@ -18,8 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Packages
 - Updated php cs fixer
-- Allow `ozdemirburak/iris` library version 3
-- Allow `illuminate/collections` library version 9
+- Update min `ozdemirburak/iris` library version to 3
+- Update min `illuminate/collections` library version to 9
+
+### Removed
+- Removed PHP 7.4 support
 
 ## [0.2.0] - 2022-01-04
 ### Added
