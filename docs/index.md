@@ -72,6 +72,16 @@ $hue->authenticate('code');
 $hue->getLight(3)->turnOn();
 ```
 
+## PHP compatibility
+Please use the following table to check which version can be used for your PHP version
+
+| PHP Version | Newest hue-it version | Supported |
+|-------------|-----------------------|-----------|
+| v8.1        | v0.2.*                | ✅         |
+| v8.0        | v0.2.*                | ✅         |
+| v7.4        | v0.2.*                | ❌         |
+
+
 ## Known limitations
 Currently, you can only control your lights and groups. Other configurations, such as the startup configuration, bridge updates, and so on are not supported yet. Feel free to create an issue
 or pull-request if you think something important is missing!
