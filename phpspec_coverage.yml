@@ -9,6 +9,8 @@ extensions:
         - text
         - html
         - xml
+        - clover
       output:
         html: coverage/html
         xml: coverage/xml
+        clover: coverage/clover.xml

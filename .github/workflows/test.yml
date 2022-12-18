@@ -102,6 +102,6 @@ jobs:
         run: './vendor/bin/phpspec run --config phpspec_coverage.yml'
 
       - name: Coverage report
-        uses: irongut/CodeCoverageSummary@v1.3.0
+        uses: lucassabreu/comment-coverage-clover@main
         with:
-          filename: coverage/xml/index.xml
+          file: coverage/clover.xml
