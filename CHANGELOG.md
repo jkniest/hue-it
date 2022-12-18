@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed
 - Packages
 
-## Unreleased
+## [0.3.0] - 2022-12-18
 ### Added
 - Added generic phpdocs for all collections
 - Added support for PHP 8.2
@@ -52,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Color (XY, Hex, RGB)
 - `Cloud` Full OAuth2 authentication flow (including Digest Auth)
 
+[0.3.0]: https://github.com/jkniest/hue-it/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/jkniest/hue-it/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/jkniest/hue-it/compare/0.1.0...0.1.1
