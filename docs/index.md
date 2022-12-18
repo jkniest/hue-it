@@ -77,6 +77,7 @@ Please use the following table to check which version can be used for your PHP v
 
 | PHP Version | Newest hue-it version | Supported |
 |-------------|-----------------------|-----------|
+| v8.2        | Unreleased            | ✅         |
 | v8.1        | v0.2.*                | ✅         |
 | v8.0        | v0.2.*                | ✅         |
 | v7.4        | v0.2.*                | ❌         |
