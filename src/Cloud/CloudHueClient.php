@@ -61,8 +61,12 @@ class CloudHueClient implements PhillipsHueClient
         return $this;
     }
 
-    public function rawRequest(string $method, string $resource, ?array $body = null, array $options = []): ResponseInterface
-    {
+    public function rawRequest(
+        string $method,
+        string $resource,
+        ?array $body = null,
+        array $options = []
+    ): ResponseInterface {
         return $this->client->request($method, "/{$resource}", array_merge([
             'json' => $body,
         ], $options));

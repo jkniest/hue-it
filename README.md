@@ -1,6 +1,10 @@
 # PHP wrapper for the Phillips Hue API
 
-[![Build Status](https://drone.jkniest.de/api/badges/jkniest/hue-it/status.svg?ref=refs/heads/master)](https://drone.jkniest.de/jkniest/hue-it)
+![Test](https://github.com/jkniest/hue-it/actions/workflows/test.yml/badge.svg?branch=main)
+[![Maintainability Rating](https://sonarqube.jkniest.de/api/project_badges/measure?project=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft&metric=sqale_rating&token=c7e0e6b763e228e55217336eaacaf6e3834d6081)](https://sonarqube.jkniest.de/dashboard?id=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft)
+[![Reliability Rating](https://sonarqube.jkniest.de/api/project_badges/measure?project=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft&metric=reliability_rating&token=c7e0e6b763e228e55217336eaacaf6e3834d6081)](https://sonarqube.jkniest.de/dashboard?id=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft)
+[![Security Rating](https://sonarqube.jkniest.de/api/project_badges/measure?project=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft&metric=security_rating&token=c7e0e6b763e228e55217336eaacaf6e3834d6081)](https://sonarqube.jkniest.de/dashboard?id=jkniest_hue-it_AYUlfuU8kdE3CZ7bVbft)
+
 
 ## Installation
 
