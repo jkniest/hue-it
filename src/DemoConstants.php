@@ -7,13 +7,13 @@ namespace jkniest\HueIt;
 class DemoConstants
 {
     public const LIGHT_DATA = [
-        'state'        => [
-            'on'        => true,
-            'bri'       => 156,
-            'hue'       => '41435',
-            'sat'       => 77,
-            'effect'    => 'none',
-            'xy'        => [
+        'state' => [
+            'on'     => true,
+            'bri'    => 156,
+            'hue'    => '41435',
+            'sat'    => 77,
+            'effect' => 'none',
+            'xy'     => [
                 0.1234,
                 0.5678,
             ],
@@ -59,19 +59,19 @@ class DemoConstants
             '2',
             '5',
         ],
-        'type'   => 'Room',
-        'state'  => [
+        'type'  => 'Room',
+        'state' => [
             'all_on' => false,
             'any_on' => true,
         ],
         'class'  => 'Bedroom',
         'action' => [
-            'on'        => false,
-            'bri'       => 123,
-            'hue'       => 23804,
-            'sat'       => 254,
-            'effect'    => 'none',
-            'xy'        => [
+            'on'     => false,
+            'bri'    => 123,
+            'hue'    => 23804,
+            'sat'    => 254,
+            'effect' => 'none',
+            'xy'     => [
                 0.2066,
                 0.6725,
             ],
