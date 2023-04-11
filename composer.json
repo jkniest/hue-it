@@ -6,15 +6,15 @@
         "php": "^8.0|^8.1|^8.2",
         "symfony/http-client": "^6.0",
         "ozdemirburak/iris": "^3.0",
-        "illuminate/collections": "^9.0"
+        "illuminate/collections": "^9.0|^10.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^7.0.1",
         "phpstan/phpstan": "^1.0",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
-        "phpunit/php-code-coverage": "^9.2.5",
+        "phpunit/php-code-coverage": "^9.2.5|^10.0.2",
         "jkniest/linting": "^1.2",
-        "friendsofphp/php-cs-fixer": "3.13.2",
+        "friendsofphp/php-cs-fixer": "3.16.0",
         "nikic/php-parser": "^4.13.2",
         "webmozart/assert": "^1.11.0"
     },
