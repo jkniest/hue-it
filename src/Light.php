@@ -35,10 +35,10 @@ class Light implements IsControllable
     private float $colorY;
 
     public function __construct(
-        private int $id,
-        array $rawData,
+        array                     $rawData,
         private PhillipsHueClient $client
-    ) {
+    )
+    {
         $this->mapData($rawData);
     }
 
@@ -82,7 +82,7 @@ class Light implements IsControllable
             return $this->brightness;
         }
 
-        return (int) (100 / 254 * $this->brightness);
+        return (int)(100 / 254 * $this->brightness);
     }
 
     public function setBrightness(int $value, bool $raw = false): self
@@ -94,7 +94,7 @@ class Light implements IsControllable
             return $this;
         }
 
-        $absolute = (int) ceil(254 / 100 * $value);
+        $absolute = (int)ceil(254 / 100 * $value);
         $this->client->lightRequest($this, ['bri' => $absolute]);
         $this->brightness = $absolute;
 
@@ -107,7 +107,7 @@ class Light implements IsControllable
             return $this->colorTemperature;
         }
 
-        return (int) (
+        return (int)(
             100 / ($this->maxColorTemperature - $this->minColorTemperature)
             * ($this->colorTemperature - $this->minColorTemperature)
         );
@@ -122,7 +122,7 @@ class Light implements IsControllable
             return $this;
         }
 
-        $absolute = (int) (
+        $absolute = (int)(
             $value * ($this->maxColorTemperature - $this->minColorTemperature)
             / 100 + $this->minColorTemperature
         );
@@ -139,7 +139,7 @@ class Light implements IsControllable
             return $this->saturation;
         }
 
-        return (int) (100 / 254 * $this->saturation);
+        return (int)(100 / 254 * $this->saturation);
     }
 
     public function setSaturation(int $value, bool $raw = false): self
@@ -151,7 +151,7 @@ class Light implements IsControllable
             return $this;
         }
 
-        $absolute = (int) ceil(254 / 100 * $value);
+        $absolute = (int)ceil(254 / 100 * $value);
         $this->client->lightRequest($this, ['sat' => $absolute]);
         $this->saturation = $absolute;
 
@@ -267,18 +267,18 @@ class Light implements IsControllable
 
     private function mapData(array $rawData): void
     {
-        $this->name = $rawData['name'];
-        $this->on = $rawData['state']['on'];
-        $this->brightness = $rawData['state']['bri'];
-        $this->colorTemperature = $rawData['state']['ct'];
-        $this->minColorTemperature = $rawData['capabilities']['control']['ct']['min'];
-        $this->maxColorTemperature = $rawData['capabilities']['control']['ct']['max'];
-        $this->saturation = $rawData['state']['sat'];
-        $this->effect = $rawData['state']['effect'];
-        $this->alert = $rawData['state']['alert'];
-        $this->reachable = $rawData['state']['reachable'];
-        $this->colorMode = $rawData['state']['colormode'];
-        $this->colorX = $rawData['state']['xy'][0];
-        $this->colorY = $rawData['state']['xy'][1];
+        $this->name = $rawData['metadata']['name'];
+        $this->on = $rawData['on']['on'];
+        $this->brightness = (int) $rawData['dimming']['brightness'];
+        $this->colorTemperature = $rawData['color_temperature']['mirek'] ?? 0; // TODO: Handle mirek_valid = false
+        $this->minColorTemperature = $rawData['color_temperature']['mirek_schema']['mirek_minimum'] ?? 0;
+        $this->maxColorTemperature = $rawData['color_temperature']['mirek_schema']['mirek_maximum'] ?? 0;
+        $this->saturation = 0; // TODO: Remove
+        $this->effect = ''; // TODO: Remove / Replace
+        $this->alert = ''; // $rawData['state']['alert']; // TODO: what
+        $this->reachable = true; // TODO: Remove
+        $this->colorMode = 'xy'; // TODO: Remove
+        $this->colorX = $rawData['color']['xy']['x'] ?? 0;
+        $this->colorY = $rawData['color']['xy']['y'] ?? 0;
     }
 }

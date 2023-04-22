@@ -23,9 +23,12 @@ class LocalHueClient implements PhillipsHueClient
 
     public function __construct(
         private string $ip,
-        private ?string $username = null
+        private ?string $applicationKey = null
     ) {
-        $this->client = HttpClient::createForBaseUri('http://'.$ip);
+        $this->client = HttpClient::createForBaseUri('https://'.$ip, [
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]);
     }
 
     public function getIp(): string
@@ -33,9 +36,9 @@ class LocalHueClient implements PhillipsHueClient
         return $this->ip;
     }
 
-    public function getUsername(): ?string
+    public function getApplicationKey(): ?string
     {
-        return $this->username;
+        return $this->applicationKey;
     }
 
     public function getClient(): HttpClientInterface
@@ -55,7 +58,7 @@ class LocalHueClient implements PhillipsHueClient
      */
     public function rawRequest(string $method, string $resource, ?array $body = null, array $options = []): ResponseInterface
     {
-        return $this->client->request($method, "/api/{$resource}", array_merge([
+        return $this->client->request($method, $resource, array_merge([
             'json' => $body,
         ], $options));
     }
@@ -63,10 +66,32 @@ class LocalHueClient implements PhillipsHueClient
     /**
      * @throws PhillipsHueException
      */
-    public function request(string $method, string $resource, ?array $body = null): array
+    public function request(string $method, string $resource, ?array $body = null, array $options = []): array
     {
         try {
-            $result = $this->rawRequest($method, $resource, $body)->toArray();
+            $result = $this->rawRequest($method, "/clip/v2/{$resource}", $body, $options)->toArray();
+
+            if (isset($result[0]['error'])) {
+                throw new PhillipsHueException($result[0]['error']['description'], $result[0]['error']['type']);
+            }
+
+            return $result;
+        } catch (ClientExceptionInterface|
+        DecodingExceptionInterface|
+        RedirectionExceptionInterface|
+        ServerExceptionInterface|
+        TransportExceptionInterface $e) {
+            throw new PhillipsHueException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * @throws PhillipsHueException
+     */
+    public function v1Request(string $method, string $resource, ?array $body = null, array $options = []): array
+    {
+        try {
+            $result = $this->rawRequest($method, "/api/{$resource}", $body, $options)->toArray();
 
             if (isset($result[0]['error'])) {
                 throw new PhillipsHueException($result[0]['error']['description'], $result[0]['error']['type']);
@@ -84,7 +109,16 @@ class LocalHueClient implements PhillipsHueClient
 
     public function userRequest(string $method, string $resource, ?array $body = null): array
     {
-        return $this->request($method, "{$this->username}/{$resource}", $body);
+        return $this->request($method, $resource, $body, [
+            'headers' => [
+                'hue-application-key' => $this->applicationKey
+            ]
+        ]);
+    }
+
+    public function v1UserRequest(string $method, string $resource, ?array $body = null): array
+    {
+        return $this->v1Request($method, "{$this->applicationKey}/{$resource}", $body);
     }
 
     public function lightRequest(Light $light, array $body): array
@@ -97,8 +131,8 @@ class LocalHueClient implements PhillipsHueClient
         return $this->userRequest('PUT', "groups/{$group->getId()}/action", $body);
     }
 
-    public function setUsername(string $username): void
+    public function setApplicationKey(string $applicationKey): void
     {
-        $this->username = $username;
+        $this->applicationKey = $applicationKey;
     }
 }

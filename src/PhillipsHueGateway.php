@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace jkniest\HueIt;
 
 use Illuminate\Support\Collection;
+use jkniest\HueIt\Model\Config;
 
 abstract class PhillipsHueGateway
 {
@@ -13,18 +14,18 @@ abstract class PhillipsHueGateway
     ) {
     }
 
-    public function getConfig(): PhillipsHueConfig
+    public function getConfig(): Config
     {
-        $result = $this->client->userRequest('GET', 'config');
+        $result = $this->client->v1UserRequest('GET', 'config');
 
-        return new PhillipsHueConfig($result);
+        return Config::fromResponse($result);
     }
 
-    public function getLight(int $id): Light
+    public function getLight(string $id): \jkniest\HueIt\Model\Light
     {
-        $result = $this->client->userRequest('GET', "lights/{$id}");
+        $result = $this->client->userRequest('GET', "resource/light/{$id}");
 
-        return new Light($id, $result, $this->client);
+        return \jkniest\HueIt\Model\Light::fromResponse($result['data'][0]);
     }
 
     /**
@@ -32,10 +33,10 @@ abstract class PhillipsHueGateway
      */
     public function getAllLights(): Collection
     {
-        $result = $this->client->userRequest('GET', 'lights');
+        $result = $this->client->userRequest('GET', 'resource/light');
 
-        return collect($result)
-            ->map(fn (array $data, int $id) => new Light($id, $data, $this->client));
+        return collect($result['data'])
+            ->map(fn (array $data) => \jkniest\HueIt\Model\Light::fromResponse($data));
     }
 
     public function getGroup(int $id): Group

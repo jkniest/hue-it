@@ -7,30 +7,31 @@ namespace jkniest\HueIt;
 class DemoConstants
 {
     public const LIGHT_DATA = [
-        'state' => [
-            'on'     => true,
-            'bri'    => 156,
-            'hue'    => '41435',
-            'sat'    => 77,
-            'effect' => 'none',
-            'xy'     => [
-                0.1234,
-                0.5678,
+        'data' => [[
+            'id'         => 'id-123',
+            'metadata' => [
+                'name' => 'Example light 1',
             ],
-            'ct'        => 380,
-            'colormode' => 'xy',
-            'reachable' => false,
-            'alert'     => 'lselect',
-        ],
-        'name'         => 'Example light 1',
-        'capabilities' => [
-            'control' => [
-                'ct' => [
-                    'min' => 200,
-                    'max' => 800,
-                ],
+            'on' => [
+                'on' => true,
             ],
-        ],
+            'dimming' => [
+                'brightness' => 60.0
+            ],
+            'color' => [
+                'xy' => [
+                    'x' => 0.1234,
+                    'y' => 0.5678,
+                ]
+            ],
+            'color_temperature' => [
+                'mirek' => 380,
+                'mirek_schema' => [
+                    'mirek_minimum' => 200,
+                    'mirek_maximum' => 800,
+                ]
+            ]
+        ]]
     ];
 
     public const CONFIG_DATA = [

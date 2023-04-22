@@ -35,7 +35,7 @@ class LocalHueClientSpec extends ObjectBehavior
     {
         $this->beConstructedWith('123.456.78.9', 'username-123');
 
-        $this->getUsername()->shouldBe('username-123');
+        $this->getApplicationKey()->shouldBe('username-123');
     }
 
     public function it_can_return_the_used_client(): void
@@ -134,14 +134,14 @@ class LocalHueClientSpec extends ObjectBehavior
 
     public function it_can_update_the_username(): void
     {
-        $this->setUsername('another username');
+        $this->setApplicationKey('another username');
 
-        $this->getUsername()->shouldBe('another username');
+        $this->getApplicationKey()->shouldBe('another username');
     }
 
     public function it_can_make_username_specific_requests(): void
     {
-        $this->setUsername('username-123');
+        $this->setApplicationKey('username-123');
 
         $callback = static function (string $method, string $url, array $options) {
             assert('POST' === $method);
@@ -167,7 +167,7 @@ class LocalHueClientSpec extends ObjectBehavior
 
     public function it_can_make_light_specific_requests(Light $light): void
     {
-        $this->setUsername('username-123');
+        $this->setApplicationKey('username-123');
 
         $callback = static function (string $method, string $url, array $options) {
             assert('PUT' === $method);
@@ -195,7 +195,7 @@ class LocalHueClientSpec extends ObjectBehavior
 
     public function it_can_make_group_specific_requests(Group $group): void
     {
-        $this->setUsername('username-123');
+        $this->setApplicationKey('username-123');
 
         $callback = static function (string $method, string $url, array $options) {
             assert('PUT' === $method);

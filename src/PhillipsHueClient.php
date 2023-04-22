@@ -17,6 +17,10 @@ interface PhillipsHueClient
 
     public function request(string $method, string $resource, ?array $body = null): array;
 
+    public function v1Request(string $method, string $resource, ?array $body = null): array;
+
+    public function v1UserRequest(string $method, string $resource, ?array $body = null): array;
+
     public function userRequest(string $method, string $resource, ?array $body = null): array;
 
     public function lightRequest(Light $light, array $body): array;

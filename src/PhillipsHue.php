@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace jkniest\HueIt;
 
 use jkniest\HueIt\Local\LocalHueClient;
-use jkniest\HueIt\Exceptions\PhillipsHueException;
 
 /**
  * @property LocalHueClient $client
  */
 class PhillipsHue extends PhillipsHueGateway
 {
-    public function __construct(string $ip, ?string $username = null)
+    public function __construct(string $ip, ?string $applicationKey = null)
     {
         parent::__construct(
-            new LocalHueClient($ip, $username),
+            new LocalHueClient($ip, $applicationKey),
         );
     }
 
@@ -24,9 +23,9 @@ class PhillipsHue extends PhillipsHueGateway
         return $this->client->getIp();
     }
 
-    public function getUsername(): ?string
+    public function getApplicationKey(): ?string
     {
-        return $this->client->getUsername();
+        return $this->client->getApplicationKey();
     }
 
     public function getClient(): LocalHueClient
@@ -41,16 +40,13 @@ class PhillipsHue extends PhillipsHueGateway
         return $this;
     }
 
-    /**
-     * @throws PhillipsHueException
-     */
     public function authenticate(string $deviceType): string
     {
-        $result = $this->client->request('POST', '', ['devicetype' => $deviceType]);
+        $result = $this->client->v1Request('POST', '', ['devicetype' => $deviceType]);
 
-        $username = $result[0]['success']['username'];
-        $this->client->setUsername($username);
+        $applicationKey = $result[0]['success']['username'];
+        $this->client->setApplicationKey($applicationKey);
 
-        return $username;
+        return $applicationKey;
     }
 }

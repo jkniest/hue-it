@@ -45,6 +45,6 @@ $hue = new PhillipsHue('123.456.78.9', 'your-username');
 $hue->getAllLights()->each->turnOn();
 
 // Also you can get your username and ip address anytime again
-$username = $hue->getUsername();
+$username = $hue->getApplicationKey();
 $ip = $hue->getIp();
 ```
