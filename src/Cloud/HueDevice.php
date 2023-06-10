@@ -9,8 +9,7 @@ class HueDevice
     public function __construct(
         private string $id,
         private ?string $name = null
-    ) {
-    }
+    ) {}
 
     public function getId(): string
     {

@@ -13,8 +13,8 @@
         "phpstan/phpstan": "^1.0",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
         "phpunit/php-code-coverage": "^9.2.5|^10.0.2",
-        "jkniest/linting": "^1.2",
-        "friendsofphp/php-cs-fixer": "3.16.0",
+        "jkniest/linting": ">=1.10.0",
+        "friendsofphp/php-cs-fixer": "3.17.0",
         "nikic/php-parser": "^4.13.2",
         "webmozart/assert": "^1.11.0"
     },
