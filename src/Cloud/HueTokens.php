@@ -16,8 +16,7 @@ class HueTokens implements Arrayable
         private string $accessToken,
         private string $refreshToken,
         private PhillipsHueCloud $cloud
-    ) {
-    }
+    ) {}
 
     public function getAccessToken(): string
     {

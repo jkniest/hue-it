@@ -10,8 +10,7 @@ abstract class PhillipsHueGateway
 {
     public function __construct(
         protected PhillipsHueClient $client
-    ) {
-    }
+    ) {}
 
     public function getConfig(): PhillipsHueConfig
     {
