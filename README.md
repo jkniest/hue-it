@@ -93,7 +93,7 @@ Please use the following table to check which version can be used for your PHP v
 |-------------|-----------------------|-----------|
 | v8.2        | v0.3.*                | ✅         |
 | v8.1        | v0.3.*                | ✅         |
-| v8.0        | v0.3.*                | ✅         |
+| v8.0        | v0.3.*                | ❌         |
 | v7.4        | v0.2.*                | ❌         |
 
 ## Roadmap

@@ -1,6 +1,0 @@
-suites:
-  src:
-    namespace: jkniest\HueIt
-    psr4_prefix: jkniest\HueIt
-formatter.name: pretty
-extensions: []
