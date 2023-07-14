@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Packages
 
 ## Unreleased
+### Changed
+- Switched test suite from phpspec to pest
+
 ### Removed
 - Removed support for php8.0
 

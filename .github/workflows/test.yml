@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [ 8.0, 8.1, 8.2 ]
+        php-version: [ 8.1, 8.2 ]
         composer-strategy: [ lowest, stable ]
 
     steps:
@@ -33,7 +33,7 @@ jobs:
         run: 'composer update -W --prefer-${{ matrix.composer-strategy }} --no-ansi --no-interaction --no-progress --optimize-autoloader'
 
       - name: Run PHP CS fixer
-        run: 'PHP_CS_FIXER_IGNORE_ENV=True ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run'
+        run: './vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run'
 
   phpstan:
     name: PHPstan
@@ -41,7 +41,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [ 8.0, 8.1, 8.2 ]
+        php-version: [ 8.1, 8.2 ]
         composer-strategy: [ lowest, stable ]
 
     steps:
@@ -68,13 +68,13 @@ jobs:
       - name: Run PHPstan
         run: './vendor/bin/phpstan analyse src --level=max'
 
-  phpspec:
-    name: PHPspec
+  pest:
+    name: Pest
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        php-version: [ 8.0, 8.1, 8.2 ]
+        php-version: [ 8.1, 8.2 ]
         composer-strategy: [ lowest, stable ]
 
     steps:
@@ -98,11 +98,5 @@ jobs:
       - name: Install dependencies
         run: 'composer update -W --prefer-${{ matrix.composer-strategy }} --no-ansi --no-interaction --no-progress --optimize-autoloader'
 
-      - name: Run PHPspec
-        run: './vendor/bin/phpspec run --config phpspec_coverage.yml'
-
-      - name: Coverage report
-        uses: lucassabreu/comment-coverage-clover@main
-        with:
-          file: coverage/clover.xml
-          min-line-coverage: 100
+      - name: Run Pest
+        run: './vendor/bin/pest --coverage --min=100'

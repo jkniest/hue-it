@@ -10,7 +10,9 @@
     "require-dev": {
         "phpstan/phpstan": "^1.0",
         "jkniest/linting": ">=1.10.0",
-        "friendsofphp/php-cs-fixer": "3.21.1"
+        "friendsofphp/php-cs-fixer": "3.21.1",
+        "pestphp/pest": "^2.8",
+        "mockery/mockery": "^1.6"
     },
     "prefer-stable": true,
     "license": "MIT",
@@ -28,15 +30,19 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\jkniest\\HueIt\\": "spec/"
+            "jkniest\\HueIt\\Tests\\": "tests/"
         }
     },
     "scripts": {
         "test": [
-            "PHP_CS_FIXER_IGNORE_ENV=True php-cs-fixer fix --config=.php-cs-fixer.php",
-            "phpspec run --config phpspec_coverage.yml",
-            "@php test-coverage.php",
-            "phpstan analyse src --level=max"
+            "php-cs-fixer fix --config=.php-cs-fixer.php",
+            "phpstan analyse src --level=max",
+            "pest --coverage --min=100 --coverage-html=coverage"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
