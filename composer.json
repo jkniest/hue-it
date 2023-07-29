@@ -10,7 +10,7 @@
     "require-dev": {
         "phpstan/phpstan": "^1.0",
         "jkniest/linting": ">=1.10.0",
-        "friendsofphp/php-cs-fixer": "3.21.1",
+        "friendsofphp/php-cs-fixer": "3.22.0",
         "pestphp/pest": "^2.8",
         "mockery/mockery": "^1.6"
     },
