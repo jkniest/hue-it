@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Collection;
+use jkniest\HueIt\Clients\LocalHueClient;
 use jkniest\HueIt\Fake\FakeHueClient;
 use jkniest\HueIt\PhillipsHue;
 
@@ -13,4 +13,8 @@ it('can use different clients', function () {
     expect($hue->getClient())->toBe($fakeClient);
 });
 
-todo('it uses the local client by default');
+it('it uses the local client by default', function(): void {
+    $hue = new PhillipsHue();
+
+    expect($hue->getClient())->toBeInstanceOf(LocalHueClient::class);
+});

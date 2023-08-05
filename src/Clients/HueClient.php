@@ -6,5 +6,9 @@ namespace jkniest\HueIt\Clients;
 
 interface HueClient
 {
+    public function isAuthenticated(): bool;
+
+    public function authenticate(): void;
+
     public function get(string $endpoint): array;
 }

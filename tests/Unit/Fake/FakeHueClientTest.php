@@ -1,10 +1,13 @@
 <?php
 
+use jkniest\HueIt\Exceptions\NotAuthenticatedException;
 use jkniest\HueIt\Fake\FakeHueClient;
 use jkniest\HueIt\Fake\Model\FakeLight;
 
 it('can return fake lights', function () {
     $client = new FakeHueClient();
+    $client->authenticate(FakeHueClient::VALID_HOST, FakeHueClient::VALID_TOKEN);
+
     $client->setFakeLights([
         FakeLight::create()->id('id-123')->name('Test Light'),
         FakeLight::create()->id('id-456')->name('Test Light 2'),
@@ -23,8 +26,15 @@ it('can return fake lights', function () {
         ->and($lights['data'][1]['metadata']['name'])->toBe('Test Light 2');
 });
 
-it('returns an empty array if the endpoint is unknown', function () {
+it('returns an empty array if the endpoint is unknown', function (): void {
     $client = new FakeHueClient();
+    $client->authenticate(FakeHueClient::VALID_HOST, FakeHueClient::VALID_TOKEN);
 
     expect($client->get('/unknown/endpoint'))->toBeEmpty();
 });
+
+it('throws exception if not authenticated', function (): void {
+    $client = new FakeHueClient();
+
+    $client->get('/resource/light');
+})->throws(NotAuthenticatedException::class);
