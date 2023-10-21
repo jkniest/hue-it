@@ -23,7 +23,7 @@ class LocalHueClient implements PhillipsHueClient
 
     public function __construct(
         private string $ip,
-        private ?string $username = null
+        private ?string $username = null,
     ) {
         $this->client = HttpClient::createForBaseUri('http://'.$ip);
     }

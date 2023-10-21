@@ -16,7 +16,7 @@ class WhitelistDevice
 
     public function __construct(
         private string $id,
-        array $rawData
+        array $rawData,
     ) {
         $this->name = $rawData['name'];
 

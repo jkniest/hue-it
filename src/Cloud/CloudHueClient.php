@@ -24,7 +24,7 @@ class CloudHueClient implements PhillipsHueClient
 
     public function __construct(
         private ?string $username = null,
-        private ?string $accessToken = null
+        private ?string $accessToken = null,
     ) {
         $this->client = HttpClient::createForBaseUri('https://api.meethue.com');
     }
@@ -65,7 +65,7 @@ class CloudHueClient implements PhillipsHueClient
         string $method,
         string $resource,
         ?array $body = null,
-        array $options = []
+        array $options = [],
     ): ResponseInterface {
         return $this->client->request($method, "/{$resource}", array_merge([
             'json' => $body,

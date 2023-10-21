@@ -6,10 +6,4 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-$config = jkniest\Linting\styles($finder);
-
-$rules = array_merge($config->getRules(), [
-    'trailing_comma_in_multiline' => ['elements' => ['arrays', 'arguments']] // Until PHP 7.4 support is dropped
-]);
-
-return $config->setRules($rules);
+return jkniest\Linting\styles($finder);
