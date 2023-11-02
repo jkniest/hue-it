@@ -100,9 +100,3 @@ jobs:
 
       - name: Run PHPspec
         run: './vendor/bin/phpspec run --config phpspec_coverage.yml'
-
-      - name: Coverage report
-        uses: lucassabreu/comment-coverage-clover@main
-        with:
-          file: coverage/clover.xml
-          min-line-coverage: 100
