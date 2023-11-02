@@ -37,7 +37,7 @@ class Light implements IsControllable
     public function __construct(
         private int $id,
         array $rawData,
-        private PhillipsHueClient $client
+        private PhillipsHueClient $client,
     ) {
         $this->mapData($rawData);
     }

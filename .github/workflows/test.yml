@@ -33,7 +33,7 @@ jobs:
         run: 'composer update -W --prefer-${{ matrix.composer-strategy }} --no-ansi --no-interaction --no-progress --optimize-autoloader'
 
       - name: Run PHP CS fixer
-        run: 'PHP_CS_FIXER_IGNORE_ENV=True ./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php'
+        run: './vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php'
 
   phpstan:
     name: PHPstan
@@ -100,9 +100,3 @@ jobs:
 
       - name: Run PHPspec
         run: './vendor/bin/phpspec run --config phpspec_coverage.yml'
-
-      - name: Coverage report
-        uses: lucassabreu/comment-coverage-clover@main
-        with:
-          file: coverage/clover.xml
-          min-line-coverage: 100

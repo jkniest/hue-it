@@ -22,7 +22,7 @@ class PhillipsHueConfig
     private Collection $whitelist;
 
     public function __construct(
-        private array $rawData
+        private array $rawData,
     ) {
         $this->name = $this->rawData['name'];
         $this->zigBeeChannel = $this->rawData['zigbeechannel'];

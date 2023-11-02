@@ -15,7 +15,7 @@ class HueTokens implements Arrayable
     public function __construct(
         private string $accessToken,
         private string $refreshToken,
-        private PhillipsHueCloud $cloud
+        private PhillipsHueCloud $cloud,
     ) {}
 
     public function getAccessToken(): string

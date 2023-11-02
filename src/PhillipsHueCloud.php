@@ -22,7 +22,7 @@ class PhillipsHueCloud extends PhillipsHueGateway
     public function __construct(
         private HueClient $connectionClient,
         private HueDevice $device,
-        private string $appId
+        private string $appId,
     ) {
         parent::__construct(new CloudHueClient());
     }
