@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Packages
 
 ## Unreleased
+### Added
+- Added simple helper `php.sh` script to start a php8.2 environment with composer
+
 ### Packages
 - Updated php cs fixer
 - Allow illuminate/collections v10
