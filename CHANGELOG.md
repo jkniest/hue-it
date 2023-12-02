@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated php cs fixer
 - Allow illuminate/collections v10
 - Allow phpunit/php-code-coverage v10
+- Allow symfony/http-client v7
 
 ## [0.3.0] - 2022-12-18
 ### Added
