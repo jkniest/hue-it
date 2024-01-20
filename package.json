@@ -7,6 +7,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "vitepress": "1.0.0-rc.35"
+    "vitepress": "1.0.0-rc.39"
   }
 }
