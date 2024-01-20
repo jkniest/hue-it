@@ -14,8 +14,8 @@
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
         "phpunit/php-code-coverage": "^9.2.5|^10.0.2",
         "jkniest/linting": ">=1.10.0",
-        "friendsofphp/php-cs-fixer": "3.46.0",
-        "nikic/php-parser": "^4.13.2",
+        "friendsofphp/php-cs-fixer": "3.48.0",
+        "nikic/php-parser": "^5.0",
         "webmozart/assert": "^1.11.0"
     },
     "prefer-stable": true,
