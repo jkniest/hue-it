@@ -14,8 +14,8 @@ class DemoConstants
             'sat'    => 77,
             'effect' => 'none',
             'xy'     => [
-                0.1234,
-                0.5678,
+                0.123_4,
+                0.567_8,
             ],
             'ct'        => 380,
             'colormode' => 'xy',
@@ -68,12 +68,12 @@ class DemoConstants
         'action' => [
             'on'     => false,
             'bri'    => 123,
-            'hue'    => 23804,
+            'hue'    => 23_804,
             'sat'    => 254,
             'effect' => 'none',
             'xy'     => [
-                0.2066,
-                0.6725,
+                0.206_6,
+                0.672_5,
             ],
             'ct'        => 153,
             'alert'     => 'lselect',
