@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Packages
 - Updated php cs fixer
 - Allow illuminate/collections v10
-- Allow phpunit/php-code-coverage v10
+- Dev only: Allow phpunit/php-code-coverage v10 & v11
 - Dev only: Use nikic/php-parser v5
 - Allow symfony/http-client v7
 

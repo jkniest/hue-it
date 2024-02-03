@@ -12,9 +12,9 @@
         "phpspec/phpspec": "^7.0.1",
         "phpstan/phpstan": "^1.0",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0.0",
-        "phpunit/php-code-coverage": "^9.2.5|^10.0.2",
+        "phpunit/php-code-coverage": "^9.2.5|^10.0.2|^11.0.0",
         "jkniest/linting": ">=1.10.0",
-        "friendsofphp/php-cs-fixer": "3.48.0",
+        "friendsofphp/php-cs-fixer": "3.49.0",
         "nikic/php-parser": "^5.0",
         "webmozart/assert": "^1.11.0"
     },
